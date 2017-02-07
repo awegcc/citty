@@ -22,9 +22,11 @@
 	* gcc_lib/mswu/wx/setup.h: no such file or directory
 		cd  \Path\To\wxWidgets\Sources\build\msw
 		`mingw32-make -j8 -f Makefile.gcc BUILD=debug`
+
 ## Others
 
 # MacOS
+
 ## 10.10.2
 
 
@@ -34,4 +36,5 @@
 ` apt-get install gcc make libwxbase3.0 libwxgtk3.0-dev `
 * install codelite IDE
 ` apt-get install codelite `
+
 ## Centos
