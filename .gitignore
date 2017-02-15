@@ -1,0 +1,10 @@
+Debug
+Release
+.codelite
+*.txt
+!CMakeLists.txt
+*.mk
+*.exe
+*.[oa]
+*.so
+*~
