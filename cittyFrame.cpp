@@ -204,8 +204,7 @@ void cittyFrame::OnGradient(wxCommandEvent& event)
 {
 	int gradient = 0;
 
-	switch (event.GetId())
-	{
+	switch (event.GetId()) {
 		case ID_NoGradient:         gradient = wxAUI_GRADIENT_NONE; break;
 		case ID_VerticalGradient:   gradient = wxAUI_GRADIENT_VERTICAL; break;
 		case ID_HorizontalGradient: gradient = wxAUI_GRADIENT_HORIZONTAL; break;
@@ -276,8 +275,7 @@ void cittyFrame::OnNotebookFlag(wxCommandEvent& event)
 				wxAUI_NB_CLOSE_ON_ACTIVE_TAB |
 				wxAUI_NB_CLOSE_ON_ALL_TABS);
 
-		switch (id)
-		{
+		switch (id) {
 			case ID_NotebookNoCloseButton: break;
 			case ID_NotebookCloseButton: m_session_style |= wxAUI_NB_CLOSE_BUTTON; break;
 			case ID_NotebookCloseButtonAll: m_session_style |= wxAUI_NB_CLOSE_ON_ALL_TABS; break;
@@ -306,20 +304,16 @@ void cittyFrame::OnNotebookFlag(wxCommandEvent& event)
 
 	size_t i, count;
 	wxAuiPaneInfoArray& all_panes = m_mgr.GetAllPanes();
-	for (i = 0, count = all_panes.GetCount(); i < count; ++i)
-	{
+	for (i = 0, count = all_panes.GetCount(); i < count; ++i) {
 		wxAuiPaneInfo& pane = all_panes.Item(i);
-		if (pane.window->IsKindOf(CLASSINFO(wxAuiNotebook)))
-		{
+		if (pane.window->IsKindOf(CLASSINFO(wxAuiNotebook))) {
 			wxAuiNotebook* nb = (wxAuiNotebook*)pane.window;
 
-			if (id == ID_NotebookArtGloss)
-			{
+			if (id == ID_NotebookArtGloss) {
 				nb->SetArtProvider(new wxAuiDefaultTabArt);
 				m_notebook_theme = 0;
 			}
-			else if (id == ID_NotebookArtSimple)
-			{
+			else if (id == ID_NotebookArtSimple) {
 				nb->SetArtProvider(new wxAuiSimpleTabArt);
 				m_notebook_theme = 1;
 			}
@@ -335,8 +329,7 @@ void cittyFrame::OnUpdateUI(wxUpdateUIEvent& event)
 {
 	unsigned int flags = m_mgr.GetFlags();
 
-	switch (event.GetId())
-	{
+	switch (event.GetId()) {
 		case ID_NoGradient:
 			event.Check(m_mgr.GetArtProvider()->GetMetric(wxAUI_DOCKART_GRADIENT_TYPE) == wxAUI_GRADIENT_NONE);
 			break;
@@ -434,8 +427,7 @@ void cittyFrame::OnCreatePerspective(wxCommandEvent& WXUNUSED(event))
 	if (dlg.ShowModal() != wxID_OK)
 		return;
 
-	if (m_perspectives.GetCount() == 0)
-	{
+	if (m_perspectives.GetCount() == 0) {
 		m_perspectives_menu->AppendSeparator();
 	}
 
@@ -472,22 +464,6 @@ wxPoint cittyFrame::GetStartPosition()
 
 void cittyFrame::OnInsertNotebookPage(wxCommandEvent& WXUNUSED(event))
 {
-	/*
-	wxString title;
-	// create the notebook off-window to avoid flicker
-	wxSize client_size = GetClientSize();
-	size_t position = m_notebook->GetPageCount();
-
-	title.Printf(wxT("Insert %lu page"), position);
-	dialogNotebook *dialog = new dialogNotebook(this, wxID_ANY,
-			wxPoint(client_size.x, client_size.y),
-			wxSize(430,200),
-			m_notebook_style);
-	m_notebook->Freeze();
-	m_notebook->InsertPage(position, dialog, title, true);
-	m_notebook->SetPageToolTip(position, title);
-	m_notebook->Thaw();
-	 */
 	size_t position = m_notebook->GetPageCount();
 	m_notebook->InsertSession(position);
 }
@@ -496,11 +472,9 @@ void cittyFrame::OnTabAlignment(wxCommandEvent &evt)
 {
 	size_t i, count;
 	wxAuiPaneInfoArray& all_panes = m_mgr.GetAllPanes();
-	for (i = 0, count = all_panes.GetCount(); i < count; ++i)
-	{
+	for (i = 0, count = all_panes.GetCount(); i < count; ++i) {
 		wxAuiPaneInfo& pane = all_panes.Item(i);
-		if (pane.window->IsKindOf(CLASSINFO(wxAuiNotebook)))
-		{
+		if (pane.window->IsKindOf(CLASSINFO(wxAuiNotebook))) {
 			wxAuiNotebook* nb = (wxAuiNotebook*)pane.window;
 
 			long style = nb->GetWindowStyleFlag();
@@ -524,7 +498,8 @@ void cittyFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 void cittyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString content = wxT("wxWidgets AUI\n"
-							"A Light Fast Simple ssh client\n"
-							"(c) Copyright 2010-2016, dawter");
+				"A Light Fast Simple ssh client\n"
+				"(c) Copyright 2010-2016, dawter");
 	wxMessageBox(content, _("About citty"), wxOK, this);
 }
+

@@ -1,5 +1,5 @@
-#ifndef CITTYNOTEBOOKDIALOG_H
-#define CITTYNOTEBOOKDIALOG_H
+#ifndef DIALOGNOTEBOOK_H
+#define DIALOGNOTEBOOK_H
 
 #include <wx/aui/aui.h>
 #include <wx/notebook.h>
@@ -46,4 +46,5 @@ private:
 
 };
 
-#endif // CITTYNOTEBOOKDIALOG_H
+#endif // DIALOGNOTEBOOK_H
+

@@ -55,19 +55,16 @@ sessionNotebook::sessionNotebook(wxWindow* parent,
 			m_notebook_style);
 }
 
-
 void sessionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 {
 	sessionNotebook* ctrl = (sessionNotebook*)evt.GetEventObject();
-	if (ctrl->GetPage(evt.GetSelection())->IsKindOf(CLASSINFO(wxHtmlWindow)))
-	{
+	if (ctrl->GetPage(evt.GetSelection())->IsKindOf(CLASSINFO(wxHtmlWindow))) {
 		int res = wxMessageBox(wxT("Sure to close/hide this notebook page?"), wxT("wxAUI"), wxYES_NO, this);
 		if (res != wxYES) {
 			evt.Veto();
 		}
 	}
-	else if(ctrl->GetPageCount() == (size_t)evt.GetSelection() + 1)
-	{
+	else if(ctrl->GetPageCount() == (size_t)evt.GetSelection() + 1) {
 		wxMessageBox(wxT("Can not close the last page!"), wxT("wxAUI"), wxOK, this);
 		evt.Veto();
 	}

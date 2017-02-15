@@ -1,7 +1,6 @@
 #ifndef CITTYFRAME_H
 #define CITTYFRAME_H
 
-
 #include <wx/aui/aui.h>
 #include <wx/textctrl.h>
 #include <wx/menu.h>
@@ -108,3 +107,4 @@ private:
 };
 
 #endif //CITTYFRAME_H
+

@@ -150,3 +150,4 @@ void dialogNotebook::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
 void dialogNotebook::OnButton(wxAuiNotebookEvent& evt)
 {
 }
+

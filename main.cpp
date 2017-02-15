@@ -10,7 +10,6 @@
 
 #include "cittyFrame.h"
 
-// -- application --
 class cittyApp : public wxApp
 {
 public:
@@ -22,8 +21,9 @@ IMPLEMENT_APP(cittyApp)
 
 bool cittyApp::OnInit()
 {
-	if ( !wxApp::OnInit() )
+	if ( !wxApp::OnInit() ) {
 		return false;
+	}
 
 	wxFrame* frame = new cittyFrame(NULL,
 			wxID_ANY,

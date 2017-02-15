@@ -1,5 +1,5 @@
-#ifndef CITTYAUINOTEBOOK_H
-#define CITTYAUINOTEBOOK_H
+#ifndef SESSIONNOTEBOOK_H
+#define SESSIONNOTEBOOK_H
 
 #include <wx/aui/aui.h>
 #include <wx/notebook.h>
@@ -46,4 +46,5 @@ private:
 	int m_id;
 };
 
-#endif // CITTYAUINOTEBOOK_H
+#endif // SESSIONNOTEBOOK_H
+
