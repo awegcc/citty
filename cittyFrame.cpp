@@ -33,7 +33,6 @@ wxBEGIN_EVENT_TABLE(cittyFrame, wxFrame)
 	EVT_MENU(ID_NoGradient, cittyFrame::OnGradient)
 	EVT_MENU(ID_VerticalGradient, cittyFrame::OnGradient)
 	EVT_MENU(ID_HorizontalGradient, cittyFrame::OnGradient)
-	EVT_MENU(ID_Settings, cittyFrame::OnSettings)
 	EVT_MENU(wxID_EXIT, cittyFrame::OnExit)
 	EVT_MENU(wxID_ABOUT, cittyFrame::OnAbout)
 	EVT_UPDATE_UI(ID_NotebookTabFixedWidth, cittyFrame::OnUpdateUI)
@@ -78,7 +77,7 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	SetIcon(wxIcon(sample_xpm));
 
 	// set up default notebook style
-	m_notebook_style = wxAUI_NB_DEFAULT_STYLE | wxAUI_NB_TAB_EXTERNAL_MOVE | wxNO_BORDER;
+	m_session_style = wxAUI_NB_DEFAULT_STYLE | wxAUI_NB_TAB_EXTERNAL_MOVE | wxNO_BORDER;
 	m_notebook_theme = 0;
 
 	// create menu
@@ -103,8 +102,6 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	options_menu->AppendRadioItem(ID_VerticalGradient, _("Vertical Caption Gradient"));
 	options_menu->AppendRadioItem(ID_HorizontalGradient, _("Horizontal Caption Gradient"));
 	options_menu->AppendSeparator();
-	options_menu->AppendSeparator();
-	options_menu->Append(ID_Settings, _("Settings Pane"));
 
 	wxMenu* notebook_menu = new wxMenu;
 	notebook_menu->AppendRadioItem(ID_NotebookArtGloss, _("Glossy Theme (Default)"));
@@ -155,7 +152,8 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	m_notebook = new sessionNotebook(this, wxID_ANY,
 			wxPoint(client_size.x, client_size.y),
 			wxSize(430,200),
-			m_notebook_style);
+			m_session_style);
+	m_notebook->AddSession();
 
 	/*
 	 * min size for the frame itself isn't completely done.
@@ -163,12 +161,7 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	 * code. For now, just hard code a frame minimum size
 	 */
 	SetMinSize(wxSize(500, 400));
-
-
-	m_mgr.AddPane(new SettingsPanel(this,this), wxAuiPaneInfo().
-			Name(wxT("settings")).Caption(wxT("Dock Manager Settings")).
-			Dockable(false).Float().Hide());
-
+	
 	// make some default perspectives
 	wxString perspective_all = m_mgr.SavePerspective();
 
@@ -205,17 +198,6 @@ void cittyFrame::OnEraseBackground(wxEraseEvent& event)
 void cittyFrame::OnSize(wxSizeEvent& event)
 {
 	event.Skip();
-}
-
-void cittyFrame::OnSettings(wxCommandEvent& WXUNUSED(evt))
-{
-	// show the settings pane, and float it
-	wxAuiPaneInfo& floating_pane = m_mgr.GetPane(wxT("settings")).Float().Show();
-
-	if (floating_pane.floating_pos == wxDefaultPosition)
-		floating_pane.FloatingPosition(GetStartPosition());
-
-	m_mgr.Update();
 }
 
 void cittyFrame::OnGradient(wxCommandEvent& event)
@@ -290,36 +272,36 @@ void cittyFrame::OnNotebookFlag(wxCommandEvent& event)
 			id == ID_NotebookCloseButtonAll ||
 			id == ID_NotebookCloseButtonActive)
 	{
-		m_notebook_style &= ~(wxAUI_NB_CLOSE_BUTTON |
+		m_session_style &= ~(wxAUI_NB_CLOSE_BUTTON |
 				wxAUI_NB_CLOSE_ON_ACTIVE_TAB |
 				wxAUI_NB_CLOSE_ON_ALL_TABS);
 
 		switch (id)
 		{
 			case ID_NotebookNoCloseButton: break;
-			case ID_NotebookCloseButton: m_notebook_style |= wxAUI_NB_CLOSE_BUTTON; break;
-			case ID_NotebookCloseButtonAll: m_notebook_style |= wxAUI_NB_CLOSE_ON_ALL_TABS; break;
-			case ID_NotebookCloseButtonActive: m_notebook_style |= wxAUI_NB_CLOSE_ON_ACTIVE_TAB; break;
+			case ID_NotebookCloseButton: m_session_style |= wxAUI_NB_CLOSE_BUTTON; break;
+			case ID_NotebookCloseButtonAll: m_session_style |= wxAUI_NB_CLOSE_ON_ALL_TABS; break;
+			case ID_NotebookCloseButtonActive: m_session_style |= wxAUI_NB_CLOSE_ON_ACTIVE_TAB; break;
 		}
 	}
 
 	if (id == ID_NotebookAllowTabMove) {
-		m_notebook_style ^= wxAUI_NB_TAB_MOVE;
+		m_session_style ^= wxAUI_NB_TAB_MOVE;
 	}
 	if (id == ID_NotebookAllowTabExternalMove) {
-		m_notebook_style ^= wxAUI_NB_TAB_EXTERNAL_MOVE;
+		m_session_style ^= wxAUI_NB_TAB_EXTERNAL_MOVE;
 	}
 	else if (id == ID_NotebookAllowTabSplit) {
-		m_notebook_style ^= wxAUI_NB_TAB_SPLIT;
+		m_session_style ^= wxAUI_NB_TAB_SPLIT;
 	}
 	else if (id == ID_NotebookWindowList) {
-		m_notebook_style ^= wxAUI_NB_WINDOWLIST_BUTTON;
+		m_session_style ^= wxAUI_NB_WINDOWLIST_BUTTON;
 	}
 	else if (id == ID_NotebookScrollButtons) {
-		m_notebook_style ^= wxAUI_NB_SCROLL_BUTTONS;
+		m_session_style ^= wxAUI_NB_SCROLL_BUTTONS;
 	}
 	else if (id == ID_NotebookTabFixedWidth) {
-		m_notebook_style ^= wxAUI_NB_TAB_FIXED_WIDTH;
+		m_session_style ^= wxAUI_NB_TAB_FIXED_WIDTH;
 	}
 
 	size_t i, count;
@@ -342,7 +324,7 @@ void cittyFrame::OnNotebookFlag(wxCommandEvent& event)
 				m_notebook_theme = 1;
 			}
 			
-			nb->SetWindowStyleFlag(m_notebook_style);
+			nb->SetWindowStyleFlag(m_session_style);
 			nb->Refresh();
 		}
 	}
@@ -394,40 +376,40 @@ void cittyFrame::OnUpdateUI(wxUpdateUIEvent& event)
 			event.Check((flags & wxAUI_MGR_NO_VENETIAN_BLINDS_FADE) != 0);
 			break;
 		case ID_NotebookNoCloseButton:
-			event.Check((m_notebook_style & (wxAUI_NB_CLOSE_BUTTON|wxAUI_NB_CLOSE_ON_ALL_TABS|wxAUI_NB_CLOSE_ON_ACTIVE_TAB)) != 0);
+			event.Check((m_session_style & (wxAUI_NB_CLOSE_BUTTON|wxAUI_NB_CLOSE_ON_ALL_TABS|wxAUI_NB_CLOSE_ON_ACTIVE_TAB)) != 0);
 			break;
 		case ID_NotebookCloseButton:
-			event.Check((m_notebook_style & wxAUI_NB_CLOSE_BUTTON) != 0);
+			event.Check((m_session_style & wxAUI_NB_CLOSE_BUTTON) != 0);
 			break;
 		case ID_NotebookCloseButtonAll:
-			event.Check((m_notebook_style & wxAUI_NB_CLOSE_ON_ALL_TABS) != 0);
+			event.Check((m_session_style & wxAUI_NB_CLOSE_ON_ALL_TABS) != 0);
 			break;
 		case ID_NotebookCloseButtonActive:
-			event.Check((m_notebook_style & wxAUI_NB_CLOSE_ON_ACTIVE_TAB) != 0);
+			event.Check((m_session_style & wxAUI_NB_CLOSE_ON_ACTIVE_TAB) != 0);
 			break;
 		case ID_NotebookAllowTabSplit:
-			event.Check((m_notebook_style & wxAUI_NB_TAB_SPLIT) != 0);
+			event.Check((m_session_style & wxAUI_NB_TAB_SPLIT) != 0);
 			break;
 		case ID_NotebookAllowTabMove:
-			event.Check((m_notebook_style & wxAUI_NB_TAB_MOVE) != 0);
+			event.Check((m_session_style & wxAUI_NB_TAB_MOVE) != 0);
 			break;
 		case ID_NotebookAllowTabExternalMove:
-			event.Check((m_notebook_style & wxAUI_NB_TAB_EXTERNAL_MOVE) != 0);
+			event.Check((m_session_style & wxAUI_NB_TAB_EXTERNAL_MOVE) != 0);
 			break;
 		case ID_NotebookScrollButtons:
-			event.Check((m_notebook_style & wxAUI_NB_SCROLL_BUTTONS) != 0);
+			event.Check((m_session_style & wxAUI_NB_SCROLL_BUTTONS) != 0);
 			break;
 		case ID_NotebookWindowList:
-			event.Check((m_notebook_style & wxAUI_NB_WINDOWLIST_BUTTON) != 0);
+			event.Check((m_session_style & wxAUI_NB_WINDOWLIST_BUTTON) != 0);
 			break;
 		case ID_NotebookTabFixedWidth:
-			event.Check((m_notebook_style & wxAUI_NB_TAB_FIXED_WIDTH) != 0);
+			event.Check((m_session_style & wxAUI_NB_TAB_FIXED_WIDTH) != 0);
 			break;
 		case ID_NotebookArtGloss:
-			event.Check(m_notebook_style == 0);
+			event.Check(m_session_style == 0);
 			break;
 		case ID_NotebookArtSimple:
-			event.Check(m_notebook_style == 1);
+			event.Check(m_session_style == 1);
 			break;
 	}
 }
@@ -490,6 +472,7 @@ wxPoint cittyFrame::GetStartPosition()
 
 void cittyFrame::OnInsertNotebookPage(wxCommandEvent& WXUNUSED(event))
 {
+	/*
 	wxString title;
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
@@ -504,6 +487,9 @@ void cittyFrame::OnInsertNotebookPage(wxCommandEvent& WXUNUSED(event))
 	m_notebook->InsertPage(position, dialog, title, true);
 	m_notebook->SetPageToolTip(position, title);
 	m_notebook->Thaw();
+	 */
+	size_t position = m_notebook->GetPageCount();
+	m_notebook->InsertSession(position);
 }
 
 void cittyFrame::OnTabAlignment(wxCommandEvent &evt)

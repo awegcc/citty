@@ -4,11 +4,9 @@
 
 #include <wx/aui/aui.h>
 #include <wx/textctrl.h>
-#include <wx/wxhtml.h>
 #include <wx/menu.h>
 #include <wx/artprov.h>
 #include <wx/spinctrl.h>
-#include <wx/bmpbuttn.h>
 #include <wx/colordlg.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
@@ -26,9 +24,6 @@ private:
 	enum
 	{
 		ID_InsertNotebookPage = wxID_HIGHEST+1,
-		ID_TextContent,
-		ID_HTMLContent,
-		ID_NotebookContent,
 		ID_CreatePerspective,
 		ID_CopyPerspectiveCode,
 		ID_AllowFloating,
@@ -44,7 +39,6 @@ private:
 		ID_VerticalGradient,
 		ID_HorizontalGradient,
 		ID_LiveUpdate,
-		ID_Settings,
 		ID_NotebookNoCloseButton,
 		ID_NotebookCloseButton,
 		ID_NotebookCloseButtonAll,
@@ -84,14 +78,10 @@ private:
 private:
 	void OnSize(wxSizeEvent& evt);
 	void OnEraseBackground(wxEraseEvent& evt);
-	void OnCreateHTML(wxCommandEvent& evt);
-	void OnCreateNotebook(wxCommandEvent& evt);
 	void OnInsertNotebookPage(wxCommandEvent& evt);
-	void OnCreateText(wxCommandEvent& evt);
 	void OnCreatePerspective(wxCommandEvent& evt);
 	void OnCopyPerspectiveCode(wxCommandEvent& evt);
 	void OnRestorePerspective(wxCommandEvent& evt);
-	void OnSettings(wxCommandEvent& evt);
 	void OnAllowNotebookDnD(wxAuiNotebookEvent& evt);
 	void OnNotebookPageClose(wxAuiNotebookEvent& evt);
 	void OnNotebookPageClosed(wxAuiNotebookEvent& evt);
@@ -109,7 +99,8 @@ private:
 	wxArrayString m_perspectives;
 	wxMenu* m_perspectives_menu;
 	sessionNotebook* m_notebook;
-	long m_notebook_style;
+	long m_session_style; // session notebook style
+	long m_dialog_style;  // dialog notebook style
 	long m_notebook_theme;
 
 private:

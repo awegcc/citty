@@ -14,6 +14,7 @@ dialogNotebook::dialogNotebook()
 
 dialogNotebook::~dialogNotebook()
 {
+	
 }
 
 dialogNotebook::dialogNotebook(wxWindow* parent,

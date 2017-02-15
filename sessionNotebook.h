@@ -3,9 +3,7 @@
 
 #include <wx/aui/aui.h>
 #include <wx/notebook.h>
-#include <wx/wxhtml.h>
 #include <wx/msgdlg.h>
-#include <wx/bmpbuttn.h>
 
 #include "dialogNotebook.h"
 
@@ -19,13 +17,9 @@ public:
 	sessionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
 	virtual ~sessionNotebook();
 	void CreateSession(const wxString &title);
-	wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
-	wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
-	bool InsertNotebookSession( size_t position);
+	bool InsertSession( size_t position);
+	bool AddSession();
 	
-private:
-	wxString GetHtmlText();
-
 protected:
 	void OnTabClicked(wxAuiNotebookEvent& evt);
 	void OnTabDragMotion(wxAuiNotebookEvent& evt);

@@ -42,20 +42,17 @@ sessionNotebook::sessionNotebook(wxWindow* parent,
 		long style = wxAUI_NB_DEFAULT_STYLE)
 : wxAuiNotebook(parent, id, pos, size, style)
 {
-	m_notebook_style = style;
+
 	m_notebook_theme = 0;
+	// set up sub notebook style
+	m_notebook_style = wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxNO_BORDER | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_BOTTOM;
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
-	
-	// set up sub notebook style
-	long notebook_style = wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxNO_BORDER | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_BOTTOM;
 	
 	m_notebook = new dialogNotebook(this, wxID_ANY,
 			wxPoint(client_size.x, client_size.y),
 			wxSize(430,200),
-			notebook_style);
-	this->AddPage(m_notebook, wxT("Welcome to wxAUI") , true, wxNullBitmap);
-	this->SetPageToolTip(this->GetPageCount()-1, "HTML (PageTooltip)");
+			m_notebook_style);
 }
 
 
@@ -71,7 +68,7 @@ void sessionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 	}
 	else if(ctrl->GetPageCount() == (size_t)evt.GetSelection() + 1)
 	{
-		wxMessageBox(wxT("Can not close this page!"), wxT("wxAUI"), wxOK, this);
+		wxMessageBox(wxT("Can not close the last page!"), wxT("wxAUI"), wxOK, this);
 		evt.Veto();
 	}
 }
@@ -153,23 +150,28 @@ void sessionNotebook::OnTabBgDClick(wxAuiNotebookEvent& evt)
 	wxMessageBox(wxT("OnTabRightUp"), _("OnTabRightUp"), wxOK, this);
 }
 
-bool sessionNotebook::InsertNotebookSession(size_t position)
+bool sessionNotebook::InsertSession(size_t position)
 {
 	bool retval = false;
 	wxString title;
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
 
-	title.Printf(wxT("Insert %lu page"), position);
+	title.Printf(wxT("the page %lu"), position);
 	dialogNotebook *dialog = new dialogNotebook(this, wxID_ANY,
 			wxPoint(client_size.x, client_size.y),
 			wxSize(430,200),
 			m_notebook_style);
-	m_notebook->Freeze();
-	retval = m_notebook->InsertPage(position, dialog, title, true);
-	m_notebook->SetPageToolTip(position, title);
-	m_notebook->Thaw();
+	this->Freeze();
+	retval = this->InsertPage(position, dialog, title, true);
+	this->SetPageToolTip(position, title);
+	this->Thaw();
 	
 	return retval;
+}
+
+bool sessionNotebook::AddSession()
+{
+	return InsertSession(this->GetPageCount());
 }
 
