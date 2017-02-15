@@ -17,7 +17,7 @@
 #include <wx/notebook.h>
 
 #include "settingsPanel.h"
-#include "cittyAuiNotebook.h"
+#include "sessionNotebook.h"
 #include "sample.xpm"
 
 class cittyFrame : public wxFrame
@@ -78,11 +78,8 @@ public:
 	void DoUpdate();
 
 private:
-	wxString GetHtmlText();
 	wxPoint GetStartPosition();
-	wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
-	wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
-	cittyAuiNotebook* CreateNotebook();
+	sessionNotebook* CreateNotebook();
 
 private:
 	void OnSize(wxSizeEvent& evt);
@@ -91,7 +88,6 @@ private:
 	void OnCreateNotebook(wxCommandEvent& evt);
 	void OnInsertNotebookPage(wxCommandEvent& evt);
 	void OnCreateText(wxCommandEvent& evt);
-	void OnChangeContentPane(wxCommandEvent& evt);
 	void OnCreatePerspective(wxCommandEvent& evt);
 	void OnCopyPerspectiveCode(wxCommandEvent& evt);
 	void OnRestorePerspective(wxCommandEvent& evt);
@@ -112,7 +108,7 @@ private:
 	wxAuiManager m_mgr;
 	wxArrayString m_perspectives;
 	wxMenu* m_perspectives_menu;
-	cittyAuiNotebook* m_notebook;
+	sessionNotebook* m_notebook;
 	long m_notebook_style;
 	long m_notebook_theme;
 

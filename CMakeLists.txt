@@ -9,9 +9,9 @@
 # define minimum cmake version
 cmake_minimum_required(VERSION 2.6.2)
  
-# Our project is called 'citty' this is how it will be called in
+# Our project is called 'wxAUI' this is how it will be called in
 # visual studio, and in our makefiles. 
-project(citty)
+project(wxAUI)
  
 # Location where cmake first looks for cmake modules.
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}")
@@ -27,7 +27,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}")
 # NOTE: if you're using aui, include aui in this required components list.
  
 # It was noticed that when using MinGW gcc it is essential that 'core' is mentioned before 'base'.
-find_package(wxWidgets COMPONENTS core base REQUIRED)
+find_package(wxWidgets COMPONENTS core base aui html REQUIRED)
  
 ##---------------------------------------------------
 ## Actual config file starts here
@@ -38,19 +38,19 @@ include( "${wxWidgets_USE_FILE}" )
  
 # For convenience we define the sources as a variable. You can add 
 # header files and cpp/c files and CMake will sort them out
-set(SRCS main.cpp cittyFrame.cpp cittyDialog.cpp cittyConfig.cpp cittyNotebookPage.cpp)
+set(SRCS main.cpp cittyFrame.cpp settingsPanel.cpp sessionNotebook.cpp dialogNotebook)
  
 # If we build for windows systems, we also include the resource file
 # containing the manifest, icon and other resources
 #if(WIN32)
-  #set(SRCS ${SRCS} citty.rc)
+  #set(SRCS ${SRCS} wxAUI.rc)
 #endif(WIN32)
  
-# Here we define the executable citty.exe or citty on other systems
+# Here we define the executable wxAUI.exe or wxAUI on other systems
 # the above paths and defines will be used in this build
-add_executable(citty WIN32 ${SRCS})
+add_executable(wxAUI WIN32 ${SRCS})
  
-# We add to our target 'citty' the wxWidgets libraries. These are
+# We add to our target 'wxAUI' the wxWidgets libraries. These are
 # set for us by the find script. If you need other libraries, you
 # can add them here as well. 
-target_link_libraries(citty ${wxWidgets_LIBRARIES})
+target_link_libraries(wxAUI ${wxWidgets_LIBRARIES})

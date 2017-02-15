@@ -34,9 +34,6 @@ wxBEGIN_EVENT_TABLE(cittyFrame, wxFrame)
 	EVT_MENU(ID_VerticalGradient, cittyFrame::OnGradient)
 	EVT_MENU(ID_HorizontalGradient, cittyFrame::OnGradient)
 	EVT_MENU(ID_Settings, cittyFrame::OnSettings)
-	EVT_MENU(ID_TextContent, cittyFrame::OnChangeContentPane)
-	EVT_MENU(ID_HTMLContent, cittyFrame::OnChangeContentPane)
-	EVT_MENU(ID_NotebookContent, cittyFrame::OnChangeContentPane)
 	EVT_MENU(wxID_EXIT, cittyFrame::OnExit)
 	EVT_MENU(wxID_ABOUT, cittyFrame::OnAbout)
 	EVT_UPDATE_UI(ID_NotebookTabFixedWidth, cittyFrame::OnUpdateUI)
@@ -89,11 +86,6 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	file_menu->Append(ID_InsertNotebookPage, _("&Insert NotebookPage"), _("Insert a NotebookPage"));
 	file_menu->Append(wxID_EXIT);
 
-	wxMenu* view_menu = new wxMenu;
-	view_menu->Append(ID_TextContent, _("Use a Text Control for the Content Pane"));
-	view_menu->Append(ID_HTMLContent, _("Use an HTML Control for the Content Pane"));
-	view_menu->Append(ID_NotebookContent, _("Use a wxAuiNotebook control for the Content Pane"));
-
 	wxMenu* options_menu = new wxMenu;
 	options_menu->AppendRadioItem(ID_TransparentHint, _("Transparent Hint"), _("Transparent Hint"));
 	options_menu->AppendRadioItem(ID_VenetianBlindsHint, _("Venetian Blinds Hint"), _("Venetian Blinds Hint"));
@@ -145,7 +137,6 @@ cittyFrame::cittyFrame(wxWindow* parent,
 
 	wxMenuBar *menubar = new wxMenuBar();
 	menubar->Append(file_menu, _("&File"));
-	menubar->Append(view_menu, _("&View"));
 	menubar->Append(m_perspectives_menu, _("&Perspectives"));
 	menubar->Append(options_menu, _("&Options"));
 	menubar->Append(notebook_menu, _("&Notebook"));
@@ -153,17 +144,18 @@ cittyFrame::cittyFrame(wxWindow* parent,
 
 	SetMenuBar(menubar);
 
+	/* not us statusbar until now
 	CreateStatusBar();
 	GetStatusBar()->SetStatusText(_("Ready"));
+	*/
 
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
 
-	m_notebook = new cittyAuiNotebook(this, wxID_ANY,
+	m_notebook = new sessionNotebook(this, wxID_ANY,
 			wxPoint(client_size.x, client_size.y),
 			wxSize(430,200),
 			m_notebook_style);
-	m_notebook->Freeze();
 
 	/*
 	 * min size for the frame itself isn't completely done.
@@ -176,17 +168,6 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	m_mgr.AddPane(new SettingsPanel(this,this), wxAuiPaneInfo().
 			Name(wxT("settings")).Caption(wxT("Dock Manager Settings")).
 			Dockable(false).Float().Hide());
-
-	// create some center panes
-
-	m_mgr.AddPane(CreateTextCtrl(), wxAuiPaneInfo().Name(wxT("text_content")).
-			CenterPane().Hide());
-
-	m_mgr.AddPane(CreateHTMLCtrl(), wxAuiPaneInfo().Name(wxT("html_content")).
-			CenterPane().Hide());
-
-	m_mgr.AddPane(CreateNotebook(), wxAuiPaneInfo().Name(wxT("notebook_content")).
-			CenterPane().PaneBorder(false));
 
 	// make some default perspectives
 	wxString perspective_all = m_mgr.SavePerspective();
@@ -360,8 +341,7 @@ void cittyFrame::OnNotebookFlag(wxCommandEvent& event)
 				nb->SetArtProvider(new wxAuiSimpleTabArt);
 				m_notebook_theme = 1;
 			}
-
-
+			
 			nb->SetWindowStyleFlag(m_notebook_style);
 			nb->Refresh();
 		}
@@ -413,7 +393,6 @@ void cittyFrame::OnUpdateUI(wxUpdateUIEvent& event)
 		case ID_NoVenetianFade:
 			event.Check((flags & wxAUI_MGR_NO_VENETIAN_BLINDS_FADE) != 0);
 			break;
-
 		case ID_NotebookNoCloseButton:
 			event.Check((m_notebook_style & (wxAUI_NB_CLOSE_BUTTON|wxAUI_NB_CLOSE_ON_ALL_TABS|wxAUI_NB_CLOSE_ON_ACTIVE_TAB)) != 0);
 			break;
@@ -450,7 +429,6 @@ void cittyFrame::OnUpdateUI(wxUpdateUIEvent& event)
 		case ID_NotebookArtSimple:
 			event.Check(m_notebook_style == 1);
 			break;
-
 	}
 }
 
@@ -468,8 +446,7 @@ void cittyFrame::OnPaneClose(wxAuiManagerEvent& evt)
 
 void cittyFrame::OnCreatePerspective(wxCommandEvent& WXUNUSED(event))
 {
-	wxTextEntryDialog dlg(this, wxT("Enter a name for the new perspective:"),
-			wxT("wxAUI Test"));
+	wxTextEntryDialog dlg(this, wxT("Enter a name for the new perspective:"), wxT("wxAUI Test"));
 
 	dlg.SetValue(wxString::Format(wxT("Perspective %u"), unsigned(m_perspectives.GetCount() + 1)));
 	if (dlg.ShowModal() != wxID_OK)
@@ -514,26 +491,20 @@ wxPoint cittyFrame::GetStartPosition()
 void cittyFrame::OnInsertNotebookPage(wxCommandEvent& WXUNUSED(event))
 {
 	wxString title;
-	title.Printf(wxT("Insert %lu page"), m_notebook->GetPageCount()-1);
-	wxTextCtrl *textctrl = new wxTextCtrl( m_notebook,
-						wxID_ANY, title,
-						wxDefaultPosition,
-						wxDefaultSize,
-						wxTE_MULTILINE|wxNO_BORDER );
+	// create the notebook off-window to avoid flicker
+	wxSize client_size = GetClientSize();
+	size_t position = m_notebook->GetPageCount();
+
+	title.Printf(wxT("Insert %lu page"), position);
+	dialogNotebook *dialog = new dialogNotebook(this, wxID_ANY,
+			wxPoint(client_size.x, client_size.y),
+			wxSize(430,200),
+			m_notebook_style);
 	m_notebook->Freeze();
-	m_notebook->InsertPage(m_notebook->GetPageCount()-1, textctrl, title, true);
-	m_notebook->SetPageToolTip(m_notebook->GetPageCount()-2, title);
+	m_notebook->InsertPage(position, dialog, title, true);
+	m_notebook->SetPageToolTip(position, title);
 	m_notebook->Thaw();
 }
-
-void cittyFrame::OnChangeContentPane(wxCommandEvent& evt)
-{
-	m_mgr.GetPane(wxT("text_content")).Show(evt.GetId() == ID_TextContent);
-	m_mgr.GetPane(wxT("html_content")).Show(evt.GetId() == ID_HTMLContent);
-	m_mgr.GetPane(wxT("notebook_content")).Show(evt.GetId() == ID_NotebookContent);
-	m_mgr.Update();
-}
-
 
 void cittyFrame::OnTabAlignment(wxCommandEvent &evt)
 {
@@ -566,90 +537,8 @@ void cittyFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 
 void cittyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
-	wxString content = wxT("wxWidgets AUI\n(c) Copyright 2010-2016, Nobody");
+	wxString content = wxT("wxWidgets AUI\n"
+							"A Light Fast Simple ssh client\n"
+							"(c) Copyright 2010-2016, dawter");
 	wxMessageBox(content, _("About citty"), wxOK, this);
 }
-
-wxTextCtrl* cittyFrame::CreateTextCtrl(const wxString& ctrl_text)
-{
-	static int n = 0;
-
-	wxString text;
-	if ( !ctrl_text.empty() ) {
-		text = ctrl_text;
-	}
-	else {
-		text.Printf(wxT("This is text box %d"), ++n);
-	}
-
-	return new wxTextCtrl(this, wxID_ANY, text,
-			wxPoint(0,0), wxSize(150,90),
-			wxNO_BORDER | wxTE_MULTILINE);
-}
-
-wxHtmlWindow* cittyFrame::CreateHTMLCtrl(wxWindow* parent)
-{
-	if (!parent) {
-		parent = this;
-	}
-
-	wxHtmlWindow* ctrl = new wxHtmlWindow(parent, wxID_ANY, wxDefaultPosition, wxSize(400,300));
-	ctrl->SetPage(GetHtmlText());
-	return ctrl;
-}
-
-cittyAuiNotebook* cittyFrame::CreateNotebook()
-{
-
-	//wxBitmap page_bmp = wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(16,16));
-	wxBitmap page_bmp = wxNullBitmap;
-
-	m_notebook->AddPage(CreateHTMLCtrl(m_notebook), wxT("Welcome to wxAUI") , false, page_bmp);
-	m_notebook->SetPageToolTip(m_notebook->GetPageCount()-1, "HTML (PageTooltip)");
-
-	wxNotebookPage *nbp = new wxNotebookPage(m_notebook, wxID_ANY );
-	delete nbp;
-	wxButton *btn = new wxButton(m_notebook, wxID_ANY);
-	m_notebook->AddPage( btn, wxT("New"), true);
-	m_notebook->SetPageToolTip(m_notebook->GetPageCount()-1, "wxNotebookPage (PageTooltip)");
-
-	m_notebook->Thaw();
-	return m_notebook;
-}
-
-
-wxString cittyFrame::GetHtmlText()
-{
-	const char* text =
-		"<html>"
-		"<body>"
-		"<h3>Welcome to wxAUI</h3>"
-		"<br/><b>Overview</b><br/>"
-		"<p>wxAUI is an Advanced User Interface library for the wxWidgets toolkit "
-		"that allows developers to create high-quality, cross-platform user "
-		"interfaces quickly and easily.</p>"
-		"<p><b>Features</b></p>"
-		"<p>With wxAUI, developers can create application frameworks with:</p>"
-		"<ul>"
-		"<li>Native, dockable floating frames</li>"
-		"<li>Perspective saving and loading</li>"
-		"<li>Native toolbars incorporating real-time, &quot;spring-loaded&quot; dragging</li>"
-		"<li>Customizable floating/docking behaviour</li>"
-		"<li>Completely customizable look-and-feel</li>"
-		"<li>Optional transparent window effects (while dragging or docking)</li>"
-		"<li>Splittable notebook control</li>"
-		"</ul>"
-		"<p><b>What's new in 0.9.4?</b></p>"
-		"<p>wxAUI 0.9.4, which is bundled with wxWidgets, adds the following features:"
-		"<ul>"
-		"<li>New wxAuiToolBar class, a toolbar control which integrates more "
-		"cleanly with wxAuiFrameManager.</li>"
-		"<li>Lots of bug fixes</li>"
-		"</ul>"
-		"<p>See README.txt for more information.</p>"
-		"</body>"
-		"</html>";
-
-	return wxString::FromAscii(text);
-}
-

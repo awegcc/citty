@@ -7,7 +7,7 @@
 
 class cittyFrame;
 
-class SettingsPanel : public wxPanel
+class SettingsPanel: public wxPanel
 {
 private:
 	enum

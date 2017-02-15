@@ -11,7 +11,6 @@
 #include "cittyFrame.h"
 
 // -- application --
-
 class cittyApp : public wxApp
 {
 public:
