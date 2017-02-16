@@ -1,21 +1,18 @@
 #include "dialogNotebook.h"
 
-
+/*
+ * Event table
+ */
 BEGIN_EVENT_TABLE(dialogNotebook, wxAuiNotebook)
 	EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, dialogNotebook::OnNotebookPageClose)
 	EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, dialogNotebook::OnAllowNotebookDnD)
 	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, dialogNotebook::OnNotebookPageClosed)
 	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, dialogNotebook::OnTabRightDown)
+	EVT_MENU(ID_MENU_NEW_DIALOG, dialogNotebook::OnNewDialog)
+	EVT_MENU(ID_MENU_FIRST_DIALOG, dialogNotebook::OnFirstDialog)
+	EVT_MENU(ID_MENU_LAST_DIALOG, dialogNotebook::OnLastDialog)
+	EVT_MENU(ID_MENU_ABOUT_DIALOG, dialogNotebook::OnAbout)
 END_EVENT_TABLE()
-
-dialogNotebook::dialogNotebook()
-{
-}
-
-dialogNotebook::~dialogNotebook()
-{
-	
-}
 
 dialogNotebook::dialogNotebook(wxWindow* parent,
 		wxWindowID id = wxID_ANY,
@@ -125,6 +122,13 @@ void dialogNotebook::OnTabMiddleUp(wxAuiNotebookEvent& evt)
 
 void dialogNotebook::OnTabRightDown(wxAuiNotebookEvent& evt)
 {
+	wxMenu menu;
+	menu.Append(ID_MENU_NEW_DIALOG, wxT("&New dailog"), wxT("New a dailog behand me") );
+	menu.Append(ID_MENU_FIRST_DIALOG, wxT("&First dailog"), wxT("Switch to the First dailog") );
+	menu.Append(ID_MENU_LAST_DIALOG, wxT("&Last dailog"), wxT("Switch to the Last dailog") );
+	menu.AppendSeparator();
+	menu.Append(ID_MENU_ABOUT_DIALOG, wxT("&About dailog"), wxT("About this dailog"), true);
+	PopupMenu(&menu);
 }
 
 void dialogNotebook::OnTabRightUp(wxAuiNotebookEvent& evt)
@@ -149,4 +153,54 @@ void dialogNotebook::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
 
 void dialogNotebook::OnButton(wxAuiNotebookEvent& evt)
 {
+}
+
+void dialogNotebook::OnAbout(wxCommandEvent& event)
+{
+	wxString content = wxT("Dialog: XXXXX\n"
+							"Host  : XXXXX\n"
+							"Port  : XXXXX");
+	wxMessageBox(content, _("Dialog"), wxOK, this);
+}
+
+void dialogNotebook::OnNewDialog(wxCommandEvent& event)
+{
+	size_t position = this->GetSelection();
+	InsertDialog(position + 1);
+}
+
+void dialogNotebook::OnFirstDialog(wxCommandEvent& event)
+{
+	// switch to the first page
+	this->SetSelection(0);
+}
+
+void dialogNotebook::OnLastDialog(wxCommandEvent& event)
+{
+	size_t position = this->GetPageCount();
+	if ( position > 0 ) {
+		// switch to the last page
+		this->SetSelection(position - 1);
+	}
+}
+
+bool dialogNotebook::InsertDialog(size_t position)
+{
+	bool retval = false;
+	wxString title;
+	// create the notebook off-window to avoid flicker
+	wxSize client_size = GetClientSize();
+
+	title.Printf(wxT("the dialog %lu"), position);
+	this->Freeze();
+	retval = this->InsertPage(position, CreateTextCtrl(), title, true);
+	this->SetPageToolTip(position, title);
+	this->Thaw();
+	
+	return retval;
+}
+
+bool dialogNotebook::AddDialog()
+{
+	return InsertDialog(this->GetPageCount());
 }

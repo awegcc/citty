@@ -21,17 +21,17 @@ private:
 	enum
 	{
 		ID_MENU_NEW_SESSION = wxID_HIGHEST+1,
-		ID_MENU_PREV_SESSION,
-		ID_MENU_NEXT_SESSION,
+		ID_MENU_FIRST_SESSION,
+		ID_MENU_LAST_SESSION,
 		ID_MENU_ABOUT_SESSION
 	};
 private:
 	wxDECLARE_EVENT_TABLE();
 
 public:
-	sessionNotebook();
+	sessionNotebook() { }
+	virtual ~sessionNotebook() { }
 	sessionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
-	virtual ~sessionNotebook();
 	void CreateSession(const wxString &title);
 	bool InsertSession( size_t position);
 	bool AddSession();
@@ -55,8 +55,8 @@ protected:
 	void OnButton(wxAuiNotebookEvent& evt);
 	void OnAbout(wxCommandEvent& WXUNUSED(event));
 	void OnNewSession(wxCommandEvent& WXUNUSED(event));
-	void OnPrevSession(wxCommandEvent& WXUNUSED(event));
-	void OnNextSession(wxCommandEvent& WXUNUSED(event));
+	void OnFirstSession(wxCommandEvent& WXUNUSED(event));
+	void OnLastSession(wxCommandEvent& WXUNUSED(event));
 
 private:
 	dialogNotebook *m_notebook;

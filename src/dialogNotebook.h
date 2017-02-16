@@ -12,20 +12,29 @@
 #include <wx/notebook.h>
 #include <wx/wxhtml.h>
 #include <wx/msgdlg.h>
-#include <wx/bmpbuttn.h>
+#include <wx/menu.h>
 
 class dialogNotebook: public wxAuiNotebook
 {
 private:
+	enum
+	{
+		ID_MENU_NEW_DIALOG = wxID_HIGHEST+1,
+		ID_MENU_FIRST_DIALOG,
+		ID_MENU_LAST_DIALOG,
+		ID_MENU_ABOUT_DIALOG
+	};
 	wxDECLARE_EVENT_TABLE();
 
 public:
-	dialogNotebook();
+	dialogNotebook() { }
+	virtual ~dialogNotebook() { }
 	dialogNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
-	virtual ~dialogNotebook();
 	void CreateDialog(const wxString &title);
 	wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
 	wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
+	bool InsertDialog( size_t position);
+	bool AddDialog();
 	
 private:
 	wxString GetHtmlText();
@@ -47,6 +56,11 @@ protected:
 	void OnNotebookPageClosed(wxAuiNotebookEvent& evt);
 	void OnAllowNotebookDnD(wxAuiNotebookEvent& evt);
 	void OnButton(wxAuiNotebookEvent& evt);
+	void OnAbout(wxCommandEvent& WXUNUSED(event));
+	void OnNewDialog(wxCommandEvent& WXUNUSED(event));
+	void OnFirstDialog(wxCommandEvent& WXUNUSED(event));
+	void OnLastDialog(wxCommandEvent& WXUNUSED(event));
+	
 private:
 	wxString m_title;
 	int m_id;

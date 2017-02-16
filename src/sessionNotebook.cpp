@@ -20,8 +20,8 @@ BEGIN_EVENT_TABLE(sessionNotebook, wxAuiNotebook)
 	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, sessionNotebook::OnNotebookPageClosed)
 	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, sessionNotebook::OnTabRightDown)
 	EVT_MENU(ID_MENU_NEW_SESSION, sessionNotebook::OnNewSession)
-	EVT_MENU(ID_MENU_PREV_SESSION, sessionNotebook::OnPrevSession)
-	EVT_MENU(ID_MENU_NEXT_SESSION, sessionNotebook::OnNextSession)
+	EVT_MENU(ID_MENU_FIRST_SESSION, sessionNotebook::OnFirstSession)
+	EVT_MENU(ID_MENU_LAST_SESSION, sessionNotebook::OnLastSession)
 	EVT_MENU(ID_MENU_ABOUT_SESSION, sessionNotebook::OnAbout)
 	
 	/* EVT_AUINOTEBOOK_BUTTON
@@ -29,15 +29,6 @@ BEGIN_EVENT_TABLE(sessionNotebook, wxAuiNotebook)
 	 */
 	//EVT_AUINOTEBOOK_BUTTON(wxID_ANY, cittyAuiNotebook::OnButton)
 END_EVENT_TABLE()
-
-sessionNotebook::sessionNotebook()
-{
-}
-
-
-sessionNotebook::~sessionNotebook()
-{
-}
 
 sessionNotebook::sessionNotebook(wxWindow* parent,
 		wxWindowID id = wxID_ANY,
@@ -149,11 +140,10 @@ void sessionNotebook::OnTabMiddleUp(wxAuiNotebookEvent& evt)
 void sessionNotebook::OnTabRightDown(wxAuiNotebookEvent& evt)
 {
 	//m_notebook->ShowWindowMenu();
-	//wxMessageBox(wxT("OnTabRightDown"), _("OnTabRightDown"), wxOK, this);
 	wxMenu menu;
 	menu.Append(ID_MENU_NEW_SESSION, wxT("&New session"), wxT("New a session behand me") );
-	menu.Append(ID_MENU_PREV_SESSION, wxT("&First session"), wxT("Switch to the First session") );
-	menu.Append(ID_MENU_NEXT_SESSION, wxT("&Last session"), wxT("Switch to the Last session") );
+	menu.Append(ID_MENU_FIRST_SESSION, wxT("&First session"), wxT("Switch to the First session") );
+	menu.Append(ID_MENU_LAST_SESSION, wxT("&Last session"), wxT("Switch to the Last session") );
 	menu.AppendSeparator();
 	menu.Append(ID_MENU_ABOUT_SESSION, wxT("&About session"), wxT("About this session"), true);
 	PopupMenu(&menu);
@@ -203,8 +193,8 @@ void sessionNotebook::OnNewSession(wxCommandEvent& event)
 void sessionNotebook::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString content = wxT("Session: XXXXX\n"
-							"Host  : XXXXX\n"
-							"Port  : XXXXX");
+							"Host   : XXXXX\n"
+							"Port   : XXXXX");
 	wxMessageBox(content, _("Session"), wxOK, this);
 }
 
@@ -212,27 +202,17 @@ void sessionNotebook::CreateSession(const wxString& title)
 {
 }
 
-void sessionNotebook::OnPrevSession(wxCommandEvent& event)
+void sessionNotebook::OnFirstSession(wxCommandEvent& event)
 {
-	/* It seems that switch to prev page is used
-	 * So I commented it
-	 * this->AdvanceSelection(false);
-	 */
-	 
-	// Change it to switch to the first page
+	//  switch to the first page
 	this->SetSelection(0);
 }
 
-void sessionNotebook::OnNextSession(wxCommandEvent& event)
+void sessionNotebook::OnLastSession(wxCommandEvent& event)
 {
-	/* It seems that switch to prev page is used
-	 * So I commented it
-	 * this->AdvanceSelection(true);
-	 */
-	 
 	size_t position = this->GetPageCount();
 	if ( position > 0 ) {
-		//switch to the last page
+		// switch to the last page
 		this->SetSelection(position - 1);
 	}
 }

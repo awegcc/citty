@@ -147,9 +147,11 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	menubar->Append(help_menu, _("&Help"));
 
 	SetMenuBar(menubar);
-
+	
+	/* No used
 	CreateStatusBar();
 	GetStatusBar()->SetStatusText(_("Reeeadyyyy"));
+	 */
 
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
