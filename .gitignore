@@ -2,6 +2,11 @@ Debug
 Release
 .DS_Store
 .codelite
+CMakeFiles/
+Makefile
+citty.project
+citty.workspace
+cmake_install.cmake
 *.txt
 !CMakeLists.txt
 *.mk
