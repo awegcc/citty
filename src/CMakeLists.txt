@@ -38,10 +38,10 @@ include( "${wxWidgets_USE_FILE}" )
  
 # For convenience we define the sources as a variable. You can add 
 # header files and cpp/c files and CMake will sort them out
-set(SRCS main.cpp \
-	 cittyFrame.cpp \
-	 settingsPanel.cpp \
-	 sessionNotebook.cpp \
+set(SRCS main.cpp 
+	 cittyFrame.cpp 
+	 settingsPanel.cpp 
+	 sessionNotebook.cpp 
 	 dialogNotebook.cpp)
  
 # If we build for windows systems, we also include the resource file
