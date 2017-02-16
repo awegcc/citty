@@ -1,5 +1,12 @@
-#ifndef DIALOGNOTEBOOK_H
-#define DIALOGNOTEBOOK_H
+#ifndef CITTYNOTEBOOKDIALOG_H
+#define CITTYNOTEBOOKDIALOG_H
+/**
+ * @class dialogNotebook
+ * @author chenc45
+ * @date 16/02/2017
+ * @file dialogNotebook.h
+ * @brief 
+ */
 
 #include <wx/aui/aui.h>
 #include <wx/notebook.h>
@@ -46,5 +53,4 @@ private:
 
 };
 
-#endif // DIALOGNOTEBOOK_H
-
+#endif // CITTYNOTEBOOKDIALOG_H

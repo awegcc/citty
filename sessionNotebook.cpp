@@ -19,6 +19,8 @@ BEGIN_EVENT_TABLE(sessionNotebook, wxAuiNotebook)
 	EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, sessionNotebook::OnAllowNotebookDnD)
 	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, sessionNotebook::OnNotebookPageClosed)
 	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, sessionNotebook::OnTabRightDown)
+	EVT_MENU(ID_MENU_NEW_SESSION, sessionNotebook::OnNewSession)
+	EVT_MENU(ID_MENU_ABOUT, sessionNotebook::OnAbout)
 	
 	/* EVT_AUINOTEBOOK_BUTTON
 	 * Triggered by Close button click On Windows 7 x64
@@ -45,7 +47,13 @@ sessionNotebook::sessionNotebook(wxWindow* parent,
 
 	m_notebook_theme = 0;
 	// set up sub notebook style
-	m_notebook_style = wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxNO_BORDER | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_BOTTOM;
+	m_notebook_style = wxNO_BORDER |
+						wxAUI_NB_BOTTOM |
+						wxAUI_NB_TAB_MOVE |
+						wxAUI_NB_CLOSE_BUTTON |
+						wxAUI_NB_WINDOWLIST_BUTTON |
+						wxAUI_NB_MIDDLE_CLICK_CLOSE |
+						wxAUI_NB_CLOSE_ON_ACTIVE_TAB;
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
 	
@@ -55,16 +63,19 @@ sessionNotebook::sessionNotebook(wxWindow* parent,
 			m_notebook_style);
 }
 
+
 void sessionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 {
 	sessionNotebook* ctrl = (sessionNotebook*)evt.GetEventObject();
-	if (ctrl->GetPage(evt.GetSelection())->IsKindOf(CLASSINFO(wxHtmlWindow))) {
+	if (ctrl->GetPage(evt.GetSelection())->IsKindOf(CLASSINFO(wxHtmlWindow)))
+	{
 		int res = wxMessageBox(wxT("Sure to close/hide this notebook page?"), wxT("wxAUI"), wxYES_NO, this);
 		if (res != wxYES) {
 			evt.Veto();
 		}
 	}
-	else if(ctrl->GetPageCount() == (size_t)evt.GetSelection() + 1) {
+	else if(ctrl->GetPageCount() == (size_t)evt.GetSelection() + 1)
+	{
 		wxMessageBox(wxT("Can not close the last page!"), wxT("wxAUI"), wxOK, this);
 		evt.Veto();
 	}
@@ -134,12 +145,20 @@ void sessionNotebook::OnTabMiddleUp(wxAuiNotebookEvent& evt)
 
 void sessionNotebook::OnTabRightDown(wxAuiNotebookEvent& evt)
 {
-	wxMessageBox(wxT("OnTabRightDown"), _("OnTabRightDown"), wxOK, this);
+	//m_notebook->ShowWindowMenu();
+	//wxMessageBox(wxT("OnTabRightDown"), _("OnTabRightDown"), wxOK, this);
+	wxMenu menu;
+	menu.Append(ID_MENU_ABOUT, wxT("&About"), wxT("About this session"));
+	menu.Append(wxID_ANY, wxT("&Second"), wxT("Second item"));
+	menu.Append(wxID_ANY, wxT("&Third"), wxT("Third item"));
+	menu.AppendSeparator();
+	menu.Append(ID_MENU_NEW_SESSION, wxT("&New"), wxT("New a session behand me."));
+	PopupMenu(&menu);
 }
 
 void sessionNotebook::OnTabRightUp(wxAuiNotebookEvent& evt)
 {
-	wxMessageBox(wxT("OnTabRightUp"), _("OnTabRightUp"), wxOK, this);
+	//wxMessageBox(wxT("OnTabRightUp"), _("OnTabRightUp"), wxOK, this);
 }
 
 void sessionNotebook::OnTabBgDClick(wxAuiNotebookEvent& evt)
@@ -170,5 +189,19 @@ bool sessionNotebook::InsertSession(size_t position)
 bool sessionNotebook::AddSession()
 {
 	return InsertSession(this->GetPageCount());
+}
+
+void sessionNotebook::OnNewSession(wxCommandEvent& event)
+{
+	size_t position = this->GetSelection();
+	InsertSession(position);
+}
+
+void sessionNotebook::OnAbout(wxCommandEvent& WXUNUSED(event))
+{
+	wxString content = wxT("Session: XXXXX\n"
+							"Host  : XXXXX\n"
+							"Port  : XXXXX");
+	wxMessageBox(content, _("Session"), wxOK, this);
 }
 

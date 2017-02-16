@@ -1,4 +1,3 @@
-
 #include <wx/wxprec.h>
 
 #include <wx/app.h>
@@ -10,6 +9,7 @@
 
 #include "cittyFrame.h"
 
+// -- application --
 class cittyApp : public wxApp
 {
 public:
@@ -26,12 +26,11 @@ bool cittyApp::OnInit()
 	}
 
 	wxFrame* frame = new cittyFrame(NULL,
-			wxID_ANY,
-			wxT("wxAUI Sample Application"),
-			wxDefaultPosition,
-			wxSize(800, 600));
+	                                wxID_ANY,
+	                                wxT("wxAUI Sample Application"),
+	                                wxDefaultPosition,
+	                                wxSize(800, 600));
 	frame->Show();
 
 	return true;
 }
-

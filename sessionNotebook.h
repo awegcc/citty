@@ -1,14 +1,28 @@
-#ifndef SESSIONNOTEBOOK_H
-#define SESSIONNOTEBOOK_H
+#ifndef CITTYAUINOTEBOOK_H
+#define CITTYAUINOTEBOOK_H
+/**
+ * @class sessionNotebook
+ * @author chenc45
+ * @date 16/02/2017
+ * @file sessionNotebook.h
+ * @brief 
+ */
 
 #include <wx/aui/aui.h>
 #include <wx/notebook.h>
 #include <wx/msgdlg.h>
+#include <wx/menu.h>
 
 #include "dialogNotebook.h"
 
 class sessionNotebook: public wxAuiNotebook
 {
+private:
+	enum
+	{
+		ID_MENU_NEW_SESSION = wxID_HIGHEST+1,
+		ID_MENU_ABOUT
+	};
 private:
 	wxDECLARE_EVENT_TABLE();
 
@@ -37,6 +51,8 @@ protected:
 	void OnNotebookPageClosed(wxAuiNotebookEvent& evt);
 	void OnAllowNotebookDnD(wxAuiNotebookEvent& evt);
 	void OnButton(wxAuiNotebookEvent& evt);
+	void OnAbout(wxCommandEvent& WXUNUSED(event));
+	void OnNewSession(wxCommandEvent& WXUNUSED(event));
 
 private:
 	dialogNotebook *m_notebook;
@@ -46,5 +62,4 @@ private:
 	int m_id;
 };
 
-#endif // SESSIONNOTEBOOK_H
-
+#endif // CITTYAUINOTEBOOK_H

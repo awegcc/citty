@@ -1,6 +1,12 @@
 #ifndef CITTYFRAME_H
 #define CITTYFRAME_H
-
+/**
+ * @class cittyFrame
+ * @author chenc45
+ * @date 16/02/2017
+ * @file cittyFrame.h
+ * @brief 
+ */
 #include <wx/aui/aui.h>
 #include <wx/textctrl.h>
 #include <wx/menu.h>
@@ -107,4 +113,3 @@ private:
 };
 
 #endif //CITTYFRAME_H
-
