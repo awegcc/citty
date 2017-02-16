@@ -20,7 +20,9 @@ BEGIN_EVENT_TABLE(sessionNotebook, wxAuiNotebook)
 	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, sessionNotebook::OnNotebookPageClosed)
 	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, sessionNotebook::OnTabRightDown)
 	EVT_MENU(ID_MENU_NEW_SESSION, sessionNotebook::OnNewSession)
-	EVT_MENU(ID_MENU_ABOUT, sessionNotebook::OnAbout)
+	EVT_MENU(ID_MENU_PREV_SESSION, sessionNotebook::OnPrevSession)
+	EVT_MENU(ID_MENU_NEXT_SESSION, sessionNotebook::OnNextSession)
+	EVT_MENU(ID_MENU_ABOUT_SESSION, sessionNotebook::OnAbout)
 	
 	/* EVT_AUINOTEBOOK_BUTTON
 	 * Triggered by Close button click On Windows 7 x64
@@ -51,6 +53,7 @@ sessionNotebook::sessionNotebook(wxWindow* parent,
 						wxAUI_NB_BOTTOM |
 						wxAUI_NB_TAB_MOVE |
 						wxAUI_NB_CLOSE_BUTTON |
+						wxAUI_NB_SCROLL_BUTTONS |
 						wxAUI_NB_WINDOWLIST_BUTTON |
 						wxAUI_NB_MIDDLE_CLICK_CLOSE |
 						wxAUI_NB_CLOSE_ON_ACTIVE_TAB;
@@ -148,17 +151,17 @@ void sessionNotebook::OnTabRightDown(wxAuiNotebookEvent& evt)
 	//m_notebook->ShowWindowMenu();
 	//wxMessageBox(wxT("OnTabRightDown"), _("OnTabRightDown"), wxOK, this);
 	wxMenu menu;
-	menu.Append(ID_MENU_ABOUT, wxT("&About"), wxT("About this session"));
-	menu.Append(wxID_ANY, wxT("&Second"), wxT("Second item"));
-	menu.Append(wxID_ANY, wxT("&Third"), wxT("Third item"));
+	menu.Append(ID_MENU_NEW_SESSION, wxT("&New session"), wxT("New a session behand me") );
+	menu.Append(ID_MENU_PREV_SESSION, wxT("&First session"), wxT("Switch to the First session") );
+	menu.Append(ID_MENU_NEXT_SESSION, wxT("&Last session"), wxT("Switch to the Last session") );
 	menu.AppendSeparator();
-	menu.Append(ID_MENU_NEW_SESSION, wxT("&New"), wxT("New a session behand me."));
+	menu.Append(ID_MENU_ABOUT_SESSION, wxT("&About session"), wxT("About this session"), true);
 	PopupMenu(&menu);
 }
 
 void sessionNotebook::OnTabRightUp(wxAuiNotebookEvent& evt)
 {
-	//wxMessageBox(wxT("OnTabRightUp"), _("OnTabRightUp"), wxOK, this);
+	wxMessageBox(wxT("OnTabRightUp"), _("OnTabRightUp"), wxOK, this);
 }
 
 void sessionNotebook::OnTabBgDClick(wxAuiNotebookEvent& evt)
@@ -194,7 +197,7 @@ bool sessionNotebook::AddSession()
 void sessionNotebook::OnNewSession(wxCommandEvent& event)
 {
 	size_t position = this->GetSelection();
-	InsertSession(position);
+	InsertSession(position + 1);
 }
 
 void sessionNotebook::OnAbout(wxCommandEvent& WXUNUSED(event))
@@ -203,5 +206,34 @@ void sessionNotebook::OnAbout(wxCommandEvent& WXUNUSED(event))
 							"Host  : XXXXX\n"
 							"Port  : XXXXX");
 	wxMessageBox(content, _("Session"), wxOK, this);
+}
+
+void sessionNotebook::CreateSession(const wxString& title)
+{
+}
+
+void sessionNotebook::OnPrevSession(wxCommandEvent& event)
+{
+	/* It seems that switch to prev page is used
+	 * So I commented it
+	 * this->AdvanceSelection(false);
+	 */
+	 
+	// Change it to switch to the first page
+	this->SetSelection(0);
+}
+
+void sessionNotebook::OnNextSession(wxCommandEvent& event)
+{
+	/* It seems that switch to prev page is used
+	 * So I commented it
+	 * this->AdvanceSelection(true);
+	 */
+	 
+	size_t position = this->GetPageCount();
+	if ( position > 0 ) {
+		//switch to the last page
+		this->SetSelection(position - 1);
+	}
 }
 

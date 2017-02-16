@@ -81,6 +81,7 @@ cittyFrame::cittyFrame(wxWindow* parent,
 						wxAUI_NB_TOP |
 						wxAUI_NB_TAB_MOVE |
 						wxAUI_NB_CLOSE_BUTTON |
+						wxAUI_NB_SCROLL_BUTTONS |
 						wxAUI_NB_WINDOWLIST_BUTTON |
 						wxAUI_NB_MIDDLE_CLICK_CLOSE |
 						wxAUI_NB_CLOSE_ON_ACTIVE_TAB;

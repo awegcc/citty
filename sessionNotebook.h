@@ -21,7 +21,9 @@ private:
 	enum
 	{
 		ID_MENU_NEW_SESSION = wxID_HIGHEST+1,
-		ID_MENU_ABOUT
+		ID_MENU_PREV_SESSION,
+		ID_MENU_NEXT_SESSION,
+		ID_MENU_ABOUT_SESSION
 	};
 private:
 	wxDECLARE_EVENT_TABLE();
@@ -53,6 +55,8 @@ protected:
 	void OnButton(wxAuiNotebookEvent& evt);
 	void OnAbout(wxCommandEvent& WXUNUSED(event));
 	void OnNewSession(wxCommandEvent& WXUNUSED(event));
+	void OnPrevSession(wxCommandEvent& WXUNUSED(event));
+	void OnNextSession(wxCommandEvent& WXUNUSED(event));
 
 private:
 	dialogNotebook *m_notebook;
