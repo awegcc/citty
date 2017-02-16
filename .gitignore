@@ -1,5 +1,6 @@
 Debug
 Release
+.DS_Stor
 .codelite
 *.txt
 !CMakeLists.txt
