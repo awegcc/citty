@@ -1,2 +1,17 @@
 # citty
-a faster, simple, light ssh client just as putty and smartty
+## Introduce
+A light ssh client
+
+## Platform
+### Windows
+#### Windows 7 x64
+
+### Windows 10
+
+### MacOS
+
+### Linux
+#### Ubuntu
+
+### Centos/Redhat
+
