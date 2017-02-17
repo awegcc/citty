@@ -514,22 +514,7 @@ wxPoint cittyFrame::GetStartPosition()
 
 void cittyFrame::OnInsertNotebookPage(wxCommandEvent& WXUNUSED(event))
 {
-	/*
-	wxString title;
-	// create the notebook off-window to avoid flicker
-	wxSize client_size = GetClientSize();
-	size_t position = m_notebook->GetPageCount();
-
-	title.Printf(wxT("Insert %lu page"), position);
-	dialogNotebook *dialog = new dialogNotebook(this, wxID_ANY,
-			wxPoint(client_size.x, client_size.y),
-			wxSize(430,200),
-			m_notebook_style);
-	m_notebook->Freeze();
-	m_notebook->InsertPage(position, dialog, title, true);
-	m_notebook->SetPageToolTip(position, title);
-	m_notebook->Thaw();
-	 */
+	wxLogMessage("Enter OnInsertNotebookPage");
 	size_t position = m_notebook->GetPageCount();
 	m_notebook->InsertSession(position);
 }
@@ -572,5 +557,6 @@ void cittyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString msg = wxbuildinfo(long_f);
 	wxMessageBox(msg, _("About citty"), wxOK, this);
+	wxLogMessage(wxT("wxLogMessage"));
 }
 

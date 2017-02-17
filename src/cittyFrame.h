@@ -16,8 +16,7 @@
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/clipbrd.h>
-
-#include <wx/notebook.h>
+#include <wx/log.h>
 
 #include "settingsPanel.h"
 #include "sessionNotebook.h"
