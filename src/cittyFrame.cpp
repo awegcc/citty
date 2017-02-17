@@ -1,6 +1,38 @@
 #include "cittyFrame.h"
 
+//helper functions
+enum wxbuildinfoformat {
+	short_f,
+	long_f
+};
+
+wxString wxbuildinfo(wxbuildinfoformat format)
+{
+    wxString wxbuild(wxVERSION_STRING);
+
+    if (format == long_f )
+    {
+#if defined(__WXMSW__)
+        wxbuild << _T("-Windows");
+#elif defined(__WXMAC__)
+        wxbuild << _T("-Mac");
+#elif defined(__UNIX__)
+        wxbuild << _T("-Linux");
+#endif
+
+#if wxUSE_UNICODE
+        wxbuild << _T("-Unicode build");
+#else
+        wxbuild << _T("-ANSI build");
+#endif // wxUSE_UNICODE
+    }
+
+    return wxbuild;
+}
+
+
 wxBEGIN_EVENT_TABLE(cittyFrame, wxFrame)
+	EVT_CLOSE(cittyFrame::OnClose)
 	EVT_ERASE_BACKGROUND(cittyFrame::OnEraseBackground)
 	EVT_SIZE(cittyFrame::OnSize)
 	EVT_MENU(cittyFrame::ID_InsertNotebookPage, cittyFrame::OnInsertNotebookPage)
@@ -87,7 +119,7 @@ cittyFrame::cittyFrame(wxWindow* parent,
 						wxAUI_NB_CLOSE_ON_ACTIVE_TAB;
 	m_notebook_theme = 0;
 	
-	// create menu
+#ifdef wxUSE_MENUS
 	wxMenu* file_menu = new wxMenu;
 	file_menu->Append(ID_InsertNotebookPage, _("&Insert NotebookPage"), _("Insert a NotebookPage"));
 	file_menu->Append(wxID_EXIT);
@@ -147,11 +179,12 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	menubar->Append(help_menu, _("&Help"));
 
 	SetMenuBar(menubar);
+#endif // wxUSE_MENUS
 	
-	/* No used
+#if wxUSE_STATUSBAR
 	CreateStatusBar();
-	GetStatusBar()->SetStatusText(_("Reeeadyyyy"));
-	 */
+	GetStatusBar()->SetStatusText(wxbuildinfo(short_f));
+#endif //wxUSE_STATUSBAR
 
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
@@ -530,10 +563,14 @@ void cittyFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 	Close(true);
 }
 
+void cittyFrame::OnClose(wxCloseEvent& event)
+{
+	Destroy();
+}
+
 void cittyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
-	wxString content = wxT("wxWidgets AUI\n"
-							"A Light Fast Simple ssh client\n"
-							"(c) Copyright 2010-2016, dawter");
-	wxMessageBox(content, _("About citty"), wxOK, this);
+	wxString msg = wxbuildinfo(long_f);
+	wxMessageBox(msg, _("About citty"), wxOK, this);
 }
+
