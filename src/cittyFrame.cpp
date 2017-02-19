@@ -1,5 +1,7 @@
 #include "cittyFrame.h"
 
+#include <wx/aboutdlg.h>
+
 //helper functions
 enum wxbuildinfoformat {
 	short_f,
@@ -556,7 +558,12 @@ void cittyFrame::OnClose(wxCloseEvent& event)
 void cittyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString msg = wxbuildinfo(long_f);
-	wxMessageBox(msg, _("About citty"), wxOK, this);
-	wxLogMessage(wxT("wxLogMessage"));
+	wxAboutDialogInfo info;
+	info.SetName(_("citty"));
+	info.SetVersion(msg);
+	info.SetCopyright(_("citty"));
+	info.SetLicence(_("wxWidgets v3"));
+	info.SetDescription(_("A light ssh client"));
+	::wxAboutBox(info);
 }
 

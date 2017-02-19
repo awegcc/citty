@@ -27,7 +27,8 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}")
 # NOTE: if you're using aui, include aui in this required components list.
  
 # It was noticed that when using MinGW gcc it is essential that 'core' is mentioned before 'base'.
-find_package(wxWidgets COMPONENTS core base aui html REQUIRED)
+# wxAboutBox -> adv(wxAdvanced)
+find_package(wxWidgets COMPONENTS core base aui adv html REQUIRED)
  
 ##---------------------------------------------------
 ## Actual config file starts here
