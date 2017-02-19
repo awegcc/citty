@@ -3,18 +3,18 @@
 /*
  * Event table
  */
-BEGIN_EVENT_TABLE(dialogNotebook, wxAuiNotebook)
-	EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, dialogNotebook::OnNotebookPageClose)
-	EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, dialogNotebook::OnAllowNotebookDnD)
-	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, dialogNotebook::OnNotebookPageClosed)
-	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, dialogNotebook::OnTabRightDown)
-	EVT_MENU(ID_MENU_NEW_DIALOG, dialogNotebook::OnNewDialog)
-	EVT_MENU(ID_MENU_FIRST_DIALOG, dialogNotebook::OnFirstDialog)
-	EVT_MENU(ID_MENU_LAST_DIALOG, dialogNotebook::OnLastDialog)
-	EVT_MENU(ID_MENU_ABOUT_DIALOG, dialogNotebook::OnAbout)
+BEGIN_EVENT_TABLE(sessionNotebook, wxAuiNotebook)
+	EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, sessionNotebook::OnNotebookPageClose)
+	EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, sessionNotebook::OnAllowNotebookDnD)
+	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, sessionNotebook::OnNotebookPageClosed)
+	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, sessionNotebook::OnTabRightDown)
+	EVT_MENU(ID_MENU_NEW_SESSION, sessionNotebook::OnNewSession)
+	EVT_MENU(ID_MENU_FIRST_SESSION, sessionNotebook::OnFirstSession)
+	EVT_MENU(ID_MENU_LAST_SESSION, sessionNotebook::OnLastSession)
+	EVT_MENU(ID_MENU_ABOUT_SESSION, sessionNotebook::OnAbout)
 END_EVENT_TABLE()
 
-dialogNotebook::dialogNotebook(wxWindow* parent,
+sessionNotebook::sessionNotebook(wxWindow* parent,
 		wxWindowID id = wxID_ANY,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
@@ -25,11 +25,11 @@ dialogNotebook::dialogNotebook(wxWindow* parent,
 	this->SetPageToolTip(this->GetPageCount()-1, "HTML (PageTooltip)");
 }
 
-void dialogNotebook::CreateDialog(const wxString& title)
+void sessionNotebook::CreateDialog(const wxString& title)
 {
 }
 
-wxTextCtrl* dialogNotebook::CreateTextCtrl(const wxString& ctrl_text)
+wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
 {
 	static int n = 0;
 
@@ -46,7 +46,7 @@ wxTextCtrl* dialogNotebook::CreateTextCtrl(const wxString& ctrl_text)
 			wxNO_BORDER | wxTE_MULTILINE);
 }
 
-wxHtmlWindow* dialogNotebook::CreateHTMLCtrl(wxWindow* parent)
+wxHtmlWindow* sessionNotebook::CreateHTMLCtrl(wxWindow* parent)
 {
 	if (!parent) {
 		parent = this;
@@ -57,7 +57,7 @@ wxHtmlWindow* dialogNotebook::CreateHTMLCtrl(wxWindow* parent)
 	return ctrl;
 }
 
-wxString dialogNotebook::GetHtmlText()
+wxString sessionNotebook::GetHtmlText()
 {
 	const char* text =
 		"<html>"
@@ -92,90 +92,90 @@ wxString dialogNotebook::GetHtmlText()
 	return wxString::FromAscii(text);
 }
 
-void dialogNotebook::OnTabClicked(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabClicked(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnTabDragMotion(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabDragMotion(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnTabEndDrag(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabEndDrag(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnTabCancelDrag(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabCancelDrag(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnTabButton(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabButton(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnTabMiddleDown(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabMiddleDown(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnTabMiddleUp(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabMiddleUp(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnTabRightDown(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabRightDown(wxAuiNotebookEvent& evt)
 {
 	wxMenu menu;
-	menu.Append(ID_MENU_NEW_DIALOG, wxT("&New dailog"), wxT("New a dailog behand me") );
-	menu.Append(ID_MENU_FIRST_DIALOG, wxT("&First dailog"), wxT("Switch to the First dailog") );
-	menu.Append(ID_MENU_LAST_DIALOG, wxT("&Last dailog"), wxT("Switch to the Last dailog") );
+	menu.Append(ID_MENU_NEW_SESSION, wxT("&New Session"), wxT("New a Session behind me") );
+	menu.Append(ID_MENU_FIRST_SESSION, wxT("&First Session"), wxT("Switch to the First Session") );
+	menu.Append(ID_MENU_LAST_SESSION, wxT("&Last Session"), wxT("Switch to the Last Session") );
 	menu.AppendSeparator();
-	menu.Append(ID_MENU_ABOUT_DIALOG, wxT("&About dailog"), wxT("About this dailog"), true);
+	menu.Append(ID_MENU_ABOUT_SESSION, wxT("&About Session"), wxT("About this Session"), true);
 	PopupMenu(&menu);
 }
 
-void dialogNotebook::OnTabRightUp(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabRightUp(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnTabBgDClick(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnTabBgDClick(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnNotebookPageClosed(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnNotebookPageClosed(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnButton(wxAuiNotebookEvent& evt)
+void sessionNotebook::OnButton(wxAuiNotebookEvent& evt)
 {
 }
 
-void dialogNotebook::OnAbout(wxCommandEvent& event)
+void sessionNotebook::OnAbout(wxCommandEvent& event)
 {
-	wxString content = wxT("Dialog: XXXXX\n"
-							"Host  : XXXXX\n"
-							"Port  : XXXXX");
-	wxMessageBox(content, _("Dialog"), wxOK, this);
+	wxString content = wxT("Session: XXXXX\n"
+							"Host   : XXXXX\n"
+							"Port   : XXXXX");
+	wxMessageBox(content, _("Session"), wxOK, this);
 }
 
-void dialogNotebook::OnNewDialog(wxCommandEvent& event)
+void sessionNotebook::OnNewSession(wxCommandEvent& event)
 {
 	size_t position = this->GetSelection();
-	InsertDialog(position + 1);
+	InsertSession(position + 1);
 }
 
-void dialogNotebook::OnFirstDialog(wxCommandEvent& event)
+void sessionNotebook::OnFirstSession(wxCommandEvent& event)
 {
 	// switch to the first page
 	this->SetSelection(0);
 }
 
-void dialogNotebook::OnLastDialog(wxCommandEvent& event)
+void sessionNotebook::OnLastSession(wxCommandEvent& event)
 {
 	size_t position = this->GetPageCount();
 	if ( position > 0 ) {
@@ -184,14 +184,14 @@ void dialogNotebook::OnLastDialog(wxCommandEvent& event)
 	}
 }
 
-bool dialogNotebook::InsertDialog(size_t position)
+bool sessionNotebook::InsertSession(size_t position)
 {
 	bool retval = false;
 	wxString title;
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
 
-	title.Printf(wxT("the dialog %lu"), position);
+	title.Printf(wxT("Session %lu"), position);
 	this->Freeze();
 	retval = this->InsertPage(position, CreateTextCtrl(), title, true);
 	this->SetPageToolTip(position, title);
@@ -200,7 +200,7 @@ bool dialogNotebook::InsertDialog(size_t position)
 	return retval;
 }
 
-bool dialogNotebook::AddDialog()
+bool sessionNotebook::AddSession()
 {
-	return InsertDialog(this->GetPageCount());
+	return InsertSession(this->GetPageCount());
 }

@@ -1,12 +1,12 @@
-#ifndef CITTYAUINOTEBOOK_H
-#define CITTYAUINOTEBOOK_H
 /**
- * @class sessionNotebook
+ * @class connectionNotebook
  * @author chenc45
  * @date 16/02/2017
- * @file sessionNotebook.h
+ * @file connectionNotebook.h
  * @brief 
  */
+#ifndef CONNECTIONNOTEBOOK_H
+#define CONNECTIONNOTEBOOK_H
 
 #include <wx/aui/aui.h>
 #include <wx/notebook.h>
@@ -15,26 +15,26 @@
 
 #include "sessionNotebook.h"
 
-class sessionNotebook: public wxAuiNotebook
+class connectionNotebook: public wxAuiNotebook
 {
 private:
 	enum
 	{
-		ID_MENU_NEW_SESSION = wxID_HIGHEST+1,
-		ID_MENU_FIRST_SESSION,
-		ID_MENU_LAST_SESSION,
-		ID_MENU_ABOUT_SESSION
+		ID_MENU_NEW_CONNECTION = wxID_HIGHEST+1,
+		ID_MENU_FIRST_CONNECTION,
+		ID_MENU_LAST_CONNECTION,
+		ID_MENU_ABOUT_CONNECTION
 	};
 private:
 	wxDECLARE_EVENT_TABLE();
 
 public:
-	sessionNotebook() { }
-	virtual ~sessionNotebook() { }
-	sessionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
-	void CreateSession(const wxString &title);
-	bool InsertSession( size_t position);
-	bool AddSession();
+	connectionNotebook() { }
+	connectionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
+	virtual ~connectionNotebook() { }
+	void CreateConnection(const wxString &title);
+	bool InsertConnection( size_t position);
+	bool AddConnection();
 	
 protected:
 	void OnTabClicked(wxAuiNotebookEvent& evt);
@@ -54,16 +54,16 @@ protected:
 	void OnAllowNotebookDnD(wxAuiNotebookEvent& evt);
 	void OnButton(wxAuiNotebookEvent& evt);
 	void OnAbout(wxCommandEvent& WXUNUSED(event));
-	void OnNewSession(wxCommandEvent& WXUNUSED(event));
-	void OnFirstSession(wxCommandEvent& WXUNUSED(event));
-	void OnLastSession(wxCommandEvent& WXUNUSED(event));
+	void OnNewConnection(wxCommandEvent& WXUNUSED(event));
+	void OnFirstConnection(wxCommandEvent& WXUNUSED(event));
+	void OnLastConnection(wxCommandEvent& WXUNUSED(event));
 
 private:
-	dialogNotebook *m_notebook;
+	sessionNotebook *m_notebook;
 	wxString m_title;
 	long m_notebook_style;
 	long m_notebook_theme;
 	int m_id;
 };
 
-#endif // CITTYAUINOTEBOOK_H
+#endif // CONNECTIONNOTEBOOK_H

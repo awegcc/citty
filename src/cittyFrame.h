@@ -1,5 +1,3 @@
-#ifndef CITTYFRAME_H
-#define CITTYFRAME_H
 /**
  * @class cittyFrame
  * @author chenc45
@@ -7,6 +5,9 @@
  * @file cittyFrame.h
  * @brief 
  */
+#ifndef CITTYFRAME_H
+#define CITTYFRAME_H
+
 #include <wx/aui/aui.h>
 #include <wx/textctrl.h>
 #include <wx/menu.h>
@@ -77,7 +78,7 @@ public:
 
 private:
 	wxPoint GetStartPosition();
-	sessionNotebook* CreateNotebook();
+	connectionNotebook* CreateNotebook();
 
 private:
 	void OnSize(wxSizeEvent& evt);
@@ -103,7 +104,7 @@ private:
 	wxAuiManager m_mgr;
 	wxArrayString m_perspectives;
 	wxMenu* m_perspectives_menu;
-	sessionNotebook* m_notebook;
+	connectionNotebook* m_notebook;
 	long m_session_style; // session notebook style
 	long m_dialog_style;  // dialog notebook style
 	long m_notebook_theme;

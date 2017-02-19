@@ -189,11 +189,11 @@ cittyFrame::cittyFrame(wxWindow* parent,
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
 
-	m_notebook = new sessionNotebook(this, wxID_ANY,
+	m_notebook = new connectionNotebook(this, wxID_ANY,
 			wxPoint(client_size.x, client_size.y),
 			wxSize(430,200),
 			m_session_style);
-	m_notebook->AddSession();
+	m_notebook->AddConnection();
 
 	/*
 	 * min size for the frame itself isn't completely done.
@@ -516,7 +516,7 @@ void cittyFrame::OnInsertNotebookPage(wxCommandEvent& WXUNUSED(event))
 {
 	wxLogMessage("Enter OnInsertNotebookPage");
 	size_t position = m_notebook->GetPageCount();
-	m_notebook->InsertSession(position);
+	m_notebook->InsertConnection(position);
 }
 
 void cittyFrame::OnTabAlignment(wxCommandEvent &evt)

@@ -14,15 +14,15 @@
    void OnTabBgDClick(wxAuiNotebookEvent& evt);
    */
 
-BEGIN_EVENT_TABLE(sessionNotebook, wxAuiNotebook)
-	EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, sessionNotebook::OnNotebookPageClose)
-	EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, sessionNotebook::OnAllowNotebookDnD)
-	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, sessionNotebook::OnNotebookPageClosed)
-	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, sessionNotebook::OnTabRightDown)
-	EVT_MENU(ID_MENU_NEW_SESSION, sessionNotebook::OnNewSession)
-	EVT_MENU(ID_MENU_FIRST_SESSION, sessionNotebook::OnFirstSession)
-	EVT_MENU(ID_MENU_LAST_SESSION, sessionNotebook::OnLastSession)
-	EVT_MENU(ID_MENU_ABOUT_SESSION, sessionNotebook::OnAbout)
+BEGIN_EVENT_TABLE(connectionNotebook, wxAuiNotebook)
+	EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, connectionNotebook::OnNotebookPageClose)
+	EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, connectionNotebook::OnAllowNotebookDnD)
+	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, connectionNotebook::OnNotebookPageClosed)
+	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, connectionNotebook::OnTabRightDown)
+	EVT_MENU(ID_MENU_NEW_CONNECTION, connectionNotebook::OnNewConnection)
+	EVT_MENU(ID_MENU_FIRST_CONNECTION, connectionNotebook::OnFirstConnection)
+	EVT_MENU(ID_MENU_LAST_CONNECTION, connectionNotebook::OnLastConnection)
+	EVT_MENU(ID_MENU_ABOUT_CONNECTION, connectionNotebook::OnAbout)
 	
 	/* EVT_AUINOTEBOOK_BUTTON
 	 * Triggered by Close button click On Windows 7 x64
@@ -30,7 +30,7 @@ BEGIN_EVENT_TABLE(sessionNotebook, wxAuiNotebook)
 	//EVT_AUINOTEBOOK_BUTTON(wxID_ANY, cittyAuiNotebook::OnButton)
 END_EVENT_TABLE()
 
-sessionNotebook::sessionNotebook(wxWindow* parent,
+connectionNotebook::connectionNotebook(wxWindow* parent,
 		wxWindowID id = wxID_ANY,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
@@ -51,16 +51,16 @@ sessionNotebook::sessionNotebook(wxWindow* parent,
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
 	
-	m_notebook = new dialogNotebook(this, wxID_ANY,
+	m_notebook = new sessionNotebook(this, wxID_ANY,
 			wxPoint(client_size.x, client_size.y),
 			wxSize(430,200),
 			m_notebook_style);
 }
 
 
-void sessionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 {
-	sessionNotebook* ctrl = (sessionNotebook*)evt.GetEventObject();
+	connectionNotebook* ctrl = (connectionNotebook*)evt.GetEventObject();
 	if (ctrl->GetPage(evt.GetSelection())->IsKindOf(CLASSINFO(wxHtmlWindow)))
 	{
 		int res = wxMessageBox(wxT("Sure to close/hide this notebook page?"), wxT("wxAUI"), wxYES_NO, this);
@@ -75,9 +75,9 @@ void sessionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 	}
 }
 
-void sessionNotebook::OnNotebookPageClosed(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnNotebookPageClosed(wxAuiNotebookEvent& evt)
 {
-	sessionNotebook* ctrl = (sessionNotebook*)evt.GetEventObject();
+	connectionNotebook* ctrl = (connectionNotebook*)evt.GetEventObject();
 
 	// selection should always be a valid index
 	wxASSERT_MSG( ctrl->GetSelection() < (int)ctrl->GetPageCount(),
@@ -88,7 +88,7 @@ void sessionNotebook::OnNotebookPageClosed(wxAuiNotebookEvent& evt)
 	evt.Skip();
 }
 
-void sessionNotebook::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
 {
 	// for the purpose of this test application, explicitly
 	// allow all noteboko drag and drop events
@@ -96,119 +96,119 @@ void sessionNotebook::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
 }
 
 
-void sessionNotebook::OnTabClicked(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabClicked(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabClicked"), _("OnTabClicked"), wxOK, this);
 }
 
-void sessionNotebook::OnTabDragMotion(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabDragMotion(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabDragMotion"), _("OnTabDragMotion"), wxOK, this);
 }
 
-void sessionNotebook::OnTabEndDrag(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabEndDrag(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabEndDrag"), _("OnTabEndDrag"), wxOK, this);
 }
 
-void sessionNotebook::OnTabCancelDrag(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabCancelDrag(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabCancelDrag"), _("OnTabCancelDrag"), wxOK, this);
 }
 
-void sessionNotebook::OnTabButton(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabButton(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabButton"), _("OnTabButton"), wxOK, this);
 	evt.Allow();
 }
 
-void sessionNotebook::OnButton(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnButton(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnButton"), _("OnButton"), wxOK, this);
 }
 
-void sessionNotebook::OnTabMiddleDown(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabMiddleDown(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabMiddleDown"), _("OnTabMiddleDown"), wxOK, this);
 }
 
-void sessionNotebook::OnTabMiddleUp(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabMiddleUp(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabMiddleUp"), _("OnTabMiddleUp"), wxOK, this);
 }
 
-void sessionNotebook::OnTabRightDown(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabRightDown(wxAuiNotebookEvent& evt)
 {
 	//m_notebook->ShowWindowMenu();
 	wxMenu menu;
-	menu.Append(ID_MENU_NEW_SESSION, wxT("&New session"), wxT("New a session behand me") );
-	menu.Append(ID_MENU_FIRST_SESSION, wxT("&First session"), wxT("Switch to the First session") );
-	menu.Append(ID_MENU_LAST_SESSION, wxT("&Last session"), wxT("Switch to the Last session") );
+	menu.Append(ID_MENU_NEW_CONNECTION, wxT("&New Connection"), wxT("New a Connection behind me") );
+	menu.Append(ID_MENU_FIRST_CONNECTION, wxT("&First Connection"), wxT("Switch to the First Connection") );
+	menu.Append(ID_MENU_LAST_CONNECTION, wxT("&Last Connection"), wxT("Switch to the Last Connection") );
 	menu.AppendSeparator();
-	menu.Append(ID_MENU_ABOUT_SESSION, wxT("&About session"), wxT("About this session"), true);
+	menu.Append(ID_MENU_ABOUT_CONNECTION, wxT("&About Connection"), wxT("About this Connection"), true);
 	PopupMenu(&menu);
 }
 
-void sessionNotebook::OnTabRightUp(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabRightUp(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabRightUp"), _("OnTabRightUp"), wxOK, this);
 }
 
-void sessionNotebook::OnTabBgDClick(wxAuiNotebookEvent& evt)
+void connectionNotebook::OnTabBgDClick(wxAuiNotebookEvent& evt)
 {
 	wxMessageBox(wxT("OnTabRightUp"), _("OnTabRightUp"), wxOK, this);
 }
 
-bool sessionNotebook::InsertSession(size_t position)
+bool connectionNotebook::InsertConnection(size_t position)
 {
 	bool retval = false;
 	wxString title;
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
 
-	title.Printf(wxT("the page %lu"), position);
-	dialogNotebook *dialog = new dialogNotebook(this, wxID_ANY,
+	title.Printf(wxT("Connection %lu"), position);
+	sessionNotebook *session = new sessionNotebook(this, wxID_ANY,
 			wxPoint(client_size.x, client_size.y),
 			wxSize(430,200),
 			m_notebook_style);
 	this->Freeze();
-	retval = this->InsertPage(position, dialog, title, true);
+	retval = this->InsertPage(position, session, title, true);
 	this->SetPageToolTip(position, title);
 	this->Thaw();
 	
 	return retval;
 }
 
-bool sessionNotebook::AddSession()
+bool connectionNotebook::AddConnection()
 {
-	return InsertSession(this->GetPageCount());
+	return InsertConnection(this->GetPageCount());
 }
 
-void sessionNotebook::OnNewSession(wxCommandEvent& event)
+void connectionNotebook::OnNewConnection(wxCommandEvent& event)
 {
 	size_t position = this->GetSelection();
-	InsertSession(position + 1);
+	InsertConnection(position + 1);
 }
 
-void sessionNotebook::OnAbout(wxCommandEvent& WXUNUSED(event))
+void connectionNotebook::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
-	wxString content = wxT("Session: XXXXX\n"
-							"Host   : XXXXX\n"
-							"Port   : XXXXX");
-	wxMessageBox(content, _("Session"), wxOK, this);
+	wxString content = wxT("Connection: XXXXX\n"
+							"Host      : XXXXX\n"
+							"Port      : XXXXX");
+	wxMessageBox(content, _("Connection"), wxOK, this);
 }
 
-void sessionNotebook::CreateSession(const wxString& title)
+void connectionNotebook::CreateConnection(const wxString& title)
 {
 }
 
-void sessionNotebook::OnFirstSession(wxCommandEvent& event)
+void connectionNotebook::OnFirstConnection(wxCommandEvent& event)
 {
 	//  switch to the first page
 	this->SetSelection(0);
 }
 
-void sessionNotebook::OnLastSession(wxCommandEvent& event)
+void connectionNotebook::OnLastConnection(wxCommandEvent& event)
 {
 	size_t position = this->GetPageCount();
 	if ( position > 0 ) {
