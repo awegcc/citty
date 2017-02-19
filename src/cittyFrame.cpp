@@ -558,10 +558,14 @@ void cittyFrame::OnClose(wxCloseEvent& event)
 void cittyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString msg = wxbuildinfo(long_f);
+	// need library adv(wxAdvanced)
 	wxAboutDialogInfo info;
 	info.SetName(_("citty"));
 	info.SetVersion(msg);
 	info.SetCopyright(_("citty"));
+	info.AddDeveloper(_("dawter"));
+	info.AddDeveloper(_("need help"));
+	info.SetWebSite(_("https://github.com/dawter/citty"));
 	info.SetLicence(_("wxWidgets v3"));
 	info.SetDescription(_("A light ssh client"));
 	::wxAboutBox(info);
