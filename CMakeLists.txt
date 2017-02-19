@@ -38,12 +38,8 @@ include( "${wxWidgets_USE_FILE}" )
  
 # For convenience we define the sources as a variable. You can add 
 # header files and cpp/c files and CMake will sort them out
-set(SRCS src/main.cpp 
-	 src/cittyFrame.cpp 
-	 src/settingsPanel.cpp 
-	 src/sessionNotebook.cpp 
-	 src/dialogNotebook.cpp
-	)
+#set(SRCS main.cpp sessionNotebook.cpp)
+FILE(GLOB SRCS "src/*.cpp")
  
 # If we build for windows systems, we also include the resource file
 # containing the manifest, icon and other resources
@@ -59,3 +55,4 @@ add_executable(citty WIN32 ${SRCS})
 # set for us by the find script. If you need other libraries, you
 # can add them here as well. 
 target_link_libraries(citty ${wxWidgets_LIBRARIES})
+

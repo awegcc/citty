@@ -16,8 +16,12 @@ public:
 	bool OnInit();
 };
 
-DECLARE_APP(cittyApp)
-IMPLEMENT_APP(cittyApp)
+DECLARE_APP(cittyApp);
+#ifdef _DEBUG
+wxIMPLEMENT_APP_CONSOLE(cittyApp);
+#else
+wxIMPLEMENT_APP(cittyApp);
+#endif
 
 bool cittyApp::OnInit()
 {

@@ -19,7 +19,7 @@
 #include <wx/log.h>
 
 #include "settingsPanel.h"
-#include "sessionNotebook.h"
+#include "connectionNotebook.h"
 #include "sample.xpm"
 
 class cittyFrame : public wxFrame
