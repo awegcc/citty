@@ -21,6 +21,7 @@ sessionNotebook::sessionNotebook(wxWindow* parent,
 		long style = wxAUI_NB_DEFAULT_STYLE)
 : wxAuiNotebook(parent, id, pos, size, style)
 {
+	m_switch = 0;
 	this->AddPage(CreateHTMLCtrl(this), wxT("Welcome to wxAUI") , true, wxNullBitmap);
 	this->SetPageToolTip(this->GetPageCount()-1, "HTML (PageTooltip)");
 }
@@ -31,90 +32,16 @@ void sessionNotebook::CreateDialog(const wxString& title)
 
 wxStyledTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
 {
-	enum
-	{
-		MARGIN_LINE_NUMBERS,
-		MARGIN_FOLD
-	};
-	wxStyledTextCtrl *text;
-	text = new wxStyledTextCtrl(this, wxID_ANY );
-	
-	text->StyleClearAll();
-	text->SetLexer(wxSTC_LEX_CPP);
- 
-	text->SetMarginWidth (MARGIN_LINE_NUMBERS, 50);
-	text->StyleSetForeground (wxSTC_STYLE_LINENUMBER, wxColour (75, 75, 75) );
-	text->StyleSetBackground (wxSTC_STYLE_LINENUMBER, wxColour (220, 220, 220));
-	text->SetMarginType (MARGIN_LINE_NUMBERS, wxSTC_MARGIN_NUMBER);
- 
- 
-	// ---- Enable code folding
-	text->SetMarginType (MARGIN_FOLD, wxSTC_MARGIN_SYMBOL);
-	text->SetMarginWidth(MARGIN_FOLD, 15);
-	text->SetMarginMask (MARGIN_FOLD, wxSTC_MASK_FOLDERS);
-	text->StyleSetBackground(MARGIN_FOLD, wxColor(200, 200, 200) );
-	text->SetMarginSensitive(MARGIN_FOLD, true);
- 
-	// Properties found from http://www.scintilla.org/SciTEDoc.html
-	text->SetProperty (wxT("fold"),         wxT("1") );
-	text->SetProperty (wxT("fold.comment"), wxT("1") );
-	text->SetProperty (wxT("fold.compact"), wxT("1") );
- 
-	wxColor grey( 100, 100, 100 );
-	text->MarkerDefine (wxSTC_MARKNUM_FOLDER, wxSTC_MARK_ARROW );
-	text->MarkerSetForeground (wxSTC_MARKNUM_FOLDER, grey);
-	text->MarkerSetBackground (wxSTC_MARKNUM_FOLDER, grey);
- 
-	text->MarkerDefine (wxSTC_MARKNUM_FOLDEROPEN,    wxSTC_MARK_ARROWDOWN);
-	text->MarkerSetForeground (wxSTC_MARKNUM_FOLDEROPEN, grey);
-	text->MarkerSetBackground (wxSTC_MARKNUM_FOLDEROPEN, grey);
- 
-	text->MarkerDefine (wxSTC_MARKNUM_FOLDERSUB,     wxSTC_MARK_EMPTY);
-	text->MarkerSetForeground (wxSTC_MARKNUM_FOLDERSUB, grey);
-	text->MarkerSetBackground (wxSTC_MARKNUM_FOLDERSUB, grey);
- 
-	text->MarkerDefine (wxSTC_MARKNUM_FOLDEREND,     wxSTC_MARK_ARROW);
-	text->MarkerSetForeground (wxSTC_MARKNUM_FOLDEREND, grey);
-	text->MarkerSetBackground (wxSTC_MARKNUM_FOLDEREND, _T("WHITE"));
- 
-	text->MarkerDefine (wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_ARROWDOWN);
-	text->MarkerSetForeground (wxSTC_MARKNUM_FOLDEROPENMID, grey);
-	text->MarkerSetBackground (wxSTC_MARKNUM_FOLDEROPENMID, _T("WHITE"));
- 
-	text->MarkerDefine (wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY);
-	text->MarkerSetForeground (wxSTC_MARKNUM_FOLDERMIDTAIL, grey);
-	text->MarkerSetBackground (wxSTC_MARKNUM_FOLDERMIDTAIL, grey);
- 
-	text->MarkerDefine (wxSTC_MARKNUM_FOLDERTAIL,    wxSTC_MARK_EMPTY);
-	text->MarkerSetForeground (wxSTC_MARKNUM_FOLDERTAIL, grey);
-	text->MarkerSetBackground (wxSTC_MARKNUM_FOLDERTAIL, grey);
-	// ---- End of code folding part
- 
-	text->SetWrapMode (wxSTC_WRAP_WORD); // other choice is wxSCI_WRAP_NONE
- 
-	text->SetText(GetCppText());
- 
-	text->StyleSetForeground (wxSTC_C_STRING,            wxColour(150,0,0));
-	text->StyleSetForeground (wxSTC_C_PREPROCESSOR,      wxColour(165,105,0));
-	text->StyleSetForeground (wxSTC_C_IDENTIFIER,        wxColour(40,0,60));
-	text->StyleSetForeground (wxSTC_C_NUMBER,            wxColour(0,150,0));
-	text->StyleSetForeground (wxSTC_C_CHARACTER,         wxColour(150,0,0));
-	text->StyleSetForeground (wxSTC_C_WORD,              wxColour(0,0,150));
-	text->StyleSetForeground (wxSTC_C_WORD2,             wxColour(0,150,0));
-	text->StyleSetForeground (wxSTC_C_COMMENT,           wxColour(150,150,150));
-	text->StyleSetForeground (wxSTC_C_COMMENTLINE,       wxColour(150,150,150));
-	text->StyleSetForeground (wxSTC_C_COMMENTDOC,        wxColour(150,150,150));
-	text->StyleSetForeground (wxSTC_C_COMMENTDOCKEYWORD, wxColour(0,0,200));
-	text->StyleSetForeground (wxSTC_C_COMMENTDOCKEYWORDERROR, wxColour(0,0,200));
-	text->StyleSetBold(wxSTC_C_WORD, true);
-	text->StyleSetBold(wxSTC_C_WORD2, true);
-	text->StyleSetBold(wxSTC_C_COMMENTDOCKEYWORD, true);
- 
-	// a sample list of keywords, I haven't included them all to keep it short...
-	text->SetKeyWords(0, wxT("return for while break continue"));
-	text->SetKeyWords(1, wxT("const int float void char double"));
-	
-	return text;
+	wxStyledTextCtrl *stc = new wxStyledTextCtrl(this, wxID_ANY );
+	stc->StyleClearAll();
+	if( m_switch%2 ) {
+		this->SetCppStyle(stc);
+	}
+	else {
+		this->SetHtmlStyle(stc);
+	}
+	m_switch++;
+	return stc;
 }
 
 wxHtmlWindow* sessionNotebook::CreateHTMLCtrl(wxWindow* parent)
@@ -128,37 +55,58 @@ wxHtmlWindow* sessionNotebook::CreateHTMLCtrl(wxWindow* parent)
 	return ctrl;
 }
 
+wxString sessionNotebook::GetCppText()
+{
+	const char* text = "// Some example\n"
+			"#define MAX 0\n\n"
+			"/** @brief The entry point */\n"
+			"int main(int argc, char *argv[])\n"
+			"{\n"
+			"	float f = 1.1;\n"
+			"	short st = 2;\n"
+			"	char cha = 98;\n"
+			"	auto long = 298;\n"
+			"	static volatile int i = 298;\n"
+			"	for (int n=0; n<MAX; n++)\n"
+			"	{\n"
+			"		printf(\"Hello World %i\\n\", n);\n"
+			"	}\n"
+			"	return 0;\n"
+			"}\n";
+	return wxString::FromAscii(text);
+}
+
 wxString sessionNotebook::GetHtmlText()
 {
 	const char* text =
-		"<html>"
-		"<body>"
-		"<h3>Welcome to wxAUI</h3>"
-		"<br/><b>Overview</b><br/>"
+		"<html>\n"
+		"<body>\n"
+		"<h3>Welcome to wxAUI</h3>\n"
+		"<br/><b>Overview</b><br/>\n"
 		"<p>wxAUI is an Advanced User Interface library for the wxWidgets toolkit "
 		"that allows developers to create high-quality, cross-platform user "
-		"interfaces quickly and easily.</p>"
-		"<p><b>Features</b></p>"
-		"<p>With wxAUI, developers can create application frameworks with:</p>"
+		"interfaces quickly and easily.</p>\n"
+		"<p><b>Features</b></p>\n"
+		"<p>With wxAUI, developers can create application frameworks with:</p>\n"
 		"<ul>"
-		"<li>Native, dockable floating frames</li>"
-		"<li>Perspective saving and loading</li>"
-		"<li>Native toolbars incorporating real-time, &quot;spring-loaded&quot; dragging</li>"
-		"<li>Customizable floating/docking behaviour</li>"
-		"<li>Completely customizable look-and-feel</li>"
-		"<li>Optional transparent window effects (while dragging or docking)</li>"
-		"<li>Splittable notebook control</li>"
-		"</ul>"
-		"<p><b>What's new in 0.9.4?</b></p>"
-		"<p>wxAUI 0.9.4, which is bundled with wxWidgets, adds the following features:"
+		"<li>Native, dockable floating frames</li>\n"
+		"<li>Perspective saving and loading</li>\n"
+		"<li>Native toolbars incorporating real-time, &quot;spring-loaded&quot; dragging</li>\n"
+		"<li>Customizable floating/docking behaviour</li>\n"
+		"<li>Completely customizable look-and-feel</li>\n"
+		"<li>Optional transparent window effects (while dragging or docking)</li>\n"
+		"<li>Splittable notebook control</li>\n"
+		"</ul>\n"
+		"<p><b>What's new in 0.9.4?</b></p>\n"
+		"<p>wxAUI 0.9.4, which is bundled with wxWidgets, adds the following features:</p>\n"
 		"<ul>"
 		"<li>New wxAuiToolBar class, a toolbar control which integrates more "
-		"cleanly with wxAuiFrameManager.</li>"
-		"<li>Lots of bug fixes</li>"
-		"</ul>"
-		"<p>See README.txt for more information.</p>"
-		"</body>"
-		"</html>";
+		"cleanly with wxAuiFrameManager.</li>\n"
+		"<li>Lots of bug fixes</li>\n"
+		"</ul>\n"
+		"<p>See README.txt for more information.</p>\n"
+		"</body>\n"
+		"</html>\n";
 
 	return wxString::FromAscii(text);
 }
@@ -276,18 +224,115 @@ bool sessionNotebook::AddSession()
 	return InsertSession(this->GetPageCount());
 }
 
-wxString sessionNotebook::GetCppText()
+bool sessionNotebook::SetCppStyle(wxStyledTextCtrl* stc)
 {
-	const char* text = "// Some example\n"
-						"#define MAX 0\n\n"
-						"/** @brief The entry point */\n"
-						"int main(int argc, char *argv[])\n"
-						"{\n"
-						"	for (int n=0; n<MAX; n++)\n"
-						"	{\n"
-						"		printf(\"Hello World %i\\n\", n);\n"
-						"	}\n"
-						"	return 0;\n"
-						"}\n";
-	return wxString::FromAscii(text);
+	enum
+	{
+		MARGIN_LINE_NUMBERS,
+		MARGIN_FOLD
+	};
+	stc->SetLexer(wxSTC_LEX_CPP);
+	stc->SetMarginWidth (MARGIN_LINE_NUMBERS, 50);
+	stc->StyleSetForeground (wxSTC_STYLE_LINENUMBER, wxColour (75, 75, 75) );
+	stc->StyleSetBackground (wxSTC_STYLE_LINENUMBER, wxColour (220, 220, 220));
+	stc->SetMarginType (MARGIN_LINE_NUMBERS, wxSTC_MARGIN_NUMBER);
+ 
+ 
+	// ---- Enable code folding
+	stc->SetMarginType (MARGIN_FOLD, wxSTC_MARGIN_SYMBOL);
+	stc->SetMarginWidth(MARGIN_FOLD, 15);
+	stc->SetMarginMask (MARGIN_FOLD, wxSTC_MASK_FOLDERS);
+	stc->StyleSetBackground(MARGIN_FOLD, wxColor(200, 200, 200) );
+	stc->SetMarginSensitive(MARGIN_FOLD, true);
+ 
+	// Properties found from http://www.scintilla.org/SciTEDoc.html
+	stc->SetProperty (wxT("fold"),         wxT("1") );
+	stc->SetProperty (wxT("fold.comment"), wxT("1") );
+	stc->SetProperty (wxT("fold.compact"), wxT("1") );
+ 
+	wxColor grey( 100, 100, 100 );
+	stc->MarkerDefine (wxSTC_MARKNUM_FOLDER, wxSTC_MARK_ARROW );
+	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDER, grey);
+	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDER, grey);
+ 
+	stc->MarkerDefine (wxSTC_MARKNUM_FOLDEROPEN,    wxSTC_MARK_ARROWDOWN);
+	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDEROPEN, grey);
+	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDEROPEN, grey);
+ 
+	stc->MarkerDefine (wxSTC_MARKNUM_FOLDERSUB,     wxSTC_MARK_EMPTY);
+	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDERSUB, grey);
+	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDERSUB, grey);
+ 
+	stc->MarkerDefine (wxSTC_MARKNUM_FOLDEREND,     wxSTC_MARK_ARROW);
+	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDEREND, grey);
+	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDEREND, _T("WHITE"));
+ 
+	stc->MarkerDefine (wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_ARROWDOWN);
+	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDEROPENMID, grey);
+	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDEROPENMID, _T("WHITE"));
+ 
+	stc->MarkerDefine (wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY);
+	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDERMIDTAIL, grey);
+	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDERMIDTAIL, grey);
+ 
+	stc->MarkerDefine (wxSTC_MARKNUM_FOLDERTAIL,    wxSTC_MARK_EMPTY);
+	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDERTAIL, grey);
+	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDERTAIL, grey);
+	// ---- End of code folding part
+ 
+	stc->SetWrapMode (wxSTC_WRAP_WORD); // other choice is wxSCI_WRAP_NONE
+ 
+	stc->SetText(GetCppText());
+ 
+	stc->StyleSetForeground (wxSTC_C_STRING,            wxColour(150,0,0));
+	stc->StyleSetForeground (wxSTC_C_PREPROCESSOR,      wxColour(165,105,0));
+	stc->StyleSetForeground (wxSTC_C_IDENTIFIER,        wxColour(40,0,60));
+	stc->StyleSetForeground (wxSTC_C_NUMBER,            wxColour(0,150,0));
+	stc->StyleSetForeground (wxSTC_C_CHARACTER,         wxColour(150,0,0));
+	stc->StyleSetForeground (wxSTC_C_WORD,              wxColour(0,0,150));
+	stc->StyleSetForeground (wxSTC_C_WORD2,             wxColour(0,150,0));
+	stc->StyleSetForeground (wxSTC_C_COMMENT,           wxColour(150,150,150));
+	stc->StyleSetForeground (wxSTC_C_COMMENTLINE,       wxColour(150,150,150));
+	stc->StyleSetForeground (wxSTC_C_COMMENTDOC,        wxColour(150,150,150));
+	stc->StyleSetForeground (wxSTC_C_COMMENTDOCKEYWORD, wxColour(0,0,200));
+	stc->StyleSetForeground (wxSTC_C_COMMENTDOCKEYWORDERROR, wxColour(0,0,200));
+	stc->StyleSetBold(wxSTC_C_WORD, true);
+	stc->StyleSetBold(wxSTC_C_WORD2, true);
+	stc->StyleSetBold(wxSTC_C_COMMENTDOCKEYWORD, true);
+ 
+	// a sample list of keywords, I haven't included them all to keep it short...
+	stc->SetKeyWords(0, wxT("struct union enum return if else for while do switch case goto break default continue"));
+	stc->SetKeyWords(1, wxT("const register auto static typedef bool char short int long float void double sizeof"));
+	
+	return true;
+}
+
+bool sessionNotebook::SetHtmlStyle(wxStyledTextCtrl* stc)
+{
+	enum
+	{
+		MARGIN_LINE_NUMBERS,
+		MARGIN_FOLD
+	};
+	stc->SetMarginWidth (MARGIN_LINE_NUMBERS, 50);
+	stc->StyleSetForeground (wxSTC_STYLE_LINENUMBER, wxColour (75, 75, 75) );
+	stc->StyleSetBackground (wxSTC_STYLE_LINENUMBER, wxColour (220, 220, 220));
+	stc->SetMarginType (MARGIN_LINE_NUMBERS, wxSTC_MARGIN_NUMBER);
+ 
+	stc->SetWrapMode (wxSTC_WRAP_WORD);
+ 
+	stc->SetText(GetHtmlText());
+ 
+	stc->StyleClearAll();
+	stc->SetLexer(wxSTC_LEX_HTML);
+	stc->StyleSetForeground (wxSTC_H_DOUBLESTRING,     wxColour(255,0,0));
+	stc->StyleSetForeground (wxSTC_H_SINGLESTRING,     wxColour(255,0,0));
+	stc->StyleSetForeground (wxSTC_H_ENTITY,           wxColour(255,0,0));
+	stc->StyleSetForeground (wxSTC_H_TAG,              wxColour(0,150,0));
+	stc->StyleSetForeground (wxSTC_H_TAGUNKNOWN,       wxColour(0,150,0));
+	stc->StyleSetForeground (wxSTC_H_ATTRIBUTE,        wxColour(0,0,150));
+	stc->StyleSetForeground (wxSTC_H_ATTRIBUTEUNKNOWN, wxColour(0,0,150));
+	stc->StyleSetForeground (wxSTC_H_COMMENT,          wxColour(150,150,150));
+	
+	return true;
 }
