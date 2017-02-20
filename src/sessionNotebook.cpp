@@ -30,8 +30,11 @@ void sessionNotebook::CreateDialog(const wxString& title)
 {
 }
 
-wxStyledTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
+wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
 {
+	/* Commented because I can use wxStyledTextCtrl on Windows
+	 * It report a link error: unresolved external symbol wxSTCNameStr
+	 * Still in investagation
 	wxStyledTextCtrl *stc = new wxStyledTextCtrl(this, wxID_ANY );
 	stc->StyleClearAll();
 	if( m_switch%2 ) {
@@ -42,6 +45,9 @@ wxStyledTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
 	}
 	m_switch++;
 	return stc;
+	*/
+
+	return new wxTextCtrl(this, wxID_ANY);
 }
 
 wxHtmlWindow* sessionNotebook::CreateHTMLCtrl(wxWindow* parent)
@@ -176,9 +182,7 @@ void sessionNotebook::OnButton(wxAuiNotebookEvent& evt)
 
 void sessionNotebook::OnAbout(wxCommandEvent& event)
 {
-	wxString content = wxT("Session: XXXXX\n"
-							"Host   : XXXXX\n"
-							"Port   : XXXXX");
+	wxString content = wxT("Host   : XXXXX\nPort   : XXXXX");
 	wxMessageBox(content, _("Session"), wxOK, this);
 }
 
@@ -224,6 +228,7 @@ bool sessionNotebook::AddSession()
 	return InsertSession(this->GetPageCount());
 }
 
+/*
 bool sessionNotebook::SetCppStyle(wxStyledTextCtrl* stc)
 {
 	enum
@@ -336,3 +341,4 @@ bool sessionNotebook::SetHtmlStyle(wxStyledTextCtrl* stc)
 	
 	return true;
 }
+*/

@@ -13,6 +13,8 @@
 #include <wx/wxhtml.h>
 #include <wx/msgdlg.h>
 #include <wx/menu.h>
+#include <wx/textctrl.h>
+
 #include <wx/stc/stc.h>
 
 class sessionNotebook: public wxAuiNotebook
@@ -32,9 +34,9 @@ public:
 	virtual ~sessionNotebook() { }
 	sessionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
 	void CreateDialog(const wxString &title);
-	wxStyledTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
-	bool SetCppStyle(wxStyledTextCtrl *stc);
-	bool SetHtmlStyle(wxStyledTextCtrl *stc);
+	wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
+	//bool SetCppStyle(wxStyledTextCtrl *stc);
+	//bool SetHtmlStyle(wxStyledTextCtrl *stc);
 	
 	wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
 	bool InsertSession( size_t position);

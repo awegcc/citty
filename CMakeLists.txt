@@ -28,7 +28,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}")
  
 # It was noticed that when using MinGW gcc it is essential that 'core' is mentioned before 'base'.
 # wxAboutBox -> adv(wxAdvanced)
-find_package(wxWidgets COMPONENTS core base aui adv stc html REQUIRED)
+find_package(wxWidgets COMPONENTS core base aui adv html REQUIRED)
  
 ##---------------------------------------------------
 ## Actual config file starts here

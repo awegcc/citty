@@ -192,9 +192,7 @@ void connectionNotebook::OnNewConnection(wxCommandEvent& event)
 
 void connectionNotebook::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
-	wxString content = wxT("Connection: XXXXX\n"
-							"Host      : XXXXX\n"
-							"Port      : XXXXX");
+	wxString content = wxT("Host      : XXXXX\nPort      : XXXXX");
 	wxMessageBox(content, _("Connection"), wxOK, this);
 }
 
