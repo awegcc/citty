@@ -42,6 +42,9 @@ include( "${wxWidgets_USE_FILE}" )
 #set(SRCS main.cpp sessionNotebook.cpp)
 FILE(GLOB SRCS "src/*.cpp")
  
+# wxWidgets-3.0.2 need c++11
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++11")
+
 # If we build for windows systems, we also include the resource file
 # containing the manifest, icon and other resources
 #if(WIN32)
