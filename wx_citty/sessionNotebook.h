@@ -10,12 +10,11 @@
 
 #include <wx/aui/aui.h>
 #include <wx/notebook.h>
-#include <wx/wxhtml.h>
 #include <wx/msgdlg.h>
 #include <wx/menu.h>
 #include <wx/textctrl.h>
-
-#include <wx/stc/stc.h>
+//#include <wx/stc/stc.h>
+//#include <wx/wxhtml.h>
 
 class sessionNotebook: public wxAuiNotebook
 {
@@ -37,8 +36,7 @@ public:
 	wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
 	//bool SetCppStyle(wxStyledTextCtrl *stc);
 	//bool SetHtmlStyle(wxStyledTextCtrl *stc);
-	
-	wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
+	//wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
 	bool InsertSession( size_t position);
 	bool AddSession();
 	
@@ -70,8 +68,8 @@ protected:
 	
 private:
 	wxString m_title;
+	wxWindow *m_parent;
 	int m_switch;
-	int m_id;
 
 };
 

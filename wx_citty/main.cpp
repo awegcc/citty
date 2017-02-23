@@ -13,7 +13,7 @@
 class cittyApp : public wxApp
 {
 public:
-	bool OnInit();
+    bool OnInit();
 };
 
 DECLARE_APP(cittyApp);
@@ -25,16 +25,16 @@ wxIMPLEMENT_APP(cittyApp);
 
 bool cittyApp::OnInit()
 {
-	if ( !wxApp::OnInit() ) {
-		return false;
-	}
-
-	wxFrame* frame = new cittyFrame(NULL,
-	                                wxID_ANY,
-	                                wxT("wxAUI Sample Application"),
-	                                wxDefaultPosition,
-	                                wxSize(800, 600));
-	frame->Show();
-
-	return true;
+    if ( !wxApp::OnInit() ) {
+        return false;
+    }
+    
+    wxFrame* frame = new cittyFrame(NULL,
+                                    wxID_ANY,
+                                    wxT("wxAUI Sample Application"),
+                                    wxDefaultPosition,
+                                    wxSize(800, 600));
+    frame->Show();
+    
+    return true;
 }

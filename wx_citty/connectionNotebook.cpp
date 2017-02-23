@@ -61,17 +61,19 @@ connectionNotebook::connectionNotebook(wxWindow* parent,
 void connectionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 {
 	connectionNotebook* ctrl = (connectionNotebook*)evt.GetEventObject();
-	if (ctrl->GetPage(evt.GetSelection())->IsKindOf(CLASSINFO(wxHtmlWindow)))
+	if (ctrl->GetPage(evt.GetSelection())->IsKindOf(CLASSINFO(wxWindow)))
 	{
-		int res = wxMessageBox(wxT("Sure to close/hide this notebook page?"), wxT("wxAUI"), wxYES_NO, this);
-		if (res != wxYES) {
+		if (wxYES == wxMessageBox(wxT("Sure to close this connection?"),
+                                  wxT("Close connection"), wxYES_NO, this))
+        {
 			evt.Veto();
 		}
 	}
 	else if(ctrl->GetPageCount() == (size_t)evt.GetSelection() + 1)
 	{
-		wxMessageBox(wxT("Can not close the last page!"), wxT("wxAUI"), wxOK, this);
-		evt.Veto();
+		wxMessageBox(wxT("Can not close the last connection!"), wxT("wxAUI"), wxOK, this);
+		//evt.Veto();
+		evt.Skip();
 	}
 }
 
