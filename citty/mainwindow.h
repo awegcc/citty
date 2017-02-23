@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTabWidget>
 
+#include "connectionpage.h"
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

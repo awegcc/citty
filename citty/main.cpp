@@ -4,11 +4,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    //w.setGeometry(300, 200, 800, 400);
-    //w.setCentralWidget(nullptr);
-    w.centerAndResize();
-    w.show();
+    MainWindow mw;
+    mw.centerAndResize();
+    mw.show();
 
     return a.exec();
 }

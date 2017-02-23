@@ -3,18 +3,17 @@
 #include <QTextEdit>
 #include <QDesktopWidget>
 #include <QTabBar>
-
 #include <QStyle>
 
 MainWindow::MainWindow(MainWindow *parent)
     : QMainWindow(parent)
 {
     m_tab = new QTabWidget(this);
-    QWidget *tabPage01 = new QWidget();
-    QWidget *tabPage02 = new QWidget();
-    QWidget *tabPage03 = new QWidget();
-    QWidget *tabPage04 = new QWidget();
-
+    m_tab->setTabPosition(QTabWidget::North);
+    QWidget *tabPage01 = new ConnectionPage();
+    QWidget *tabPage02 = new ConnectionPage();
+    QWidget *tabPage03 = new ConnectionPage();
+    QWidget *tabPage04 = new ConnectionPage();
 
     m_tab->addTab(tabPage01, "tab01");
     m_tab->addTab(tabPage02, "tab02");
