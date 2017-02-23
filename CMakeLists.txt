@@ -40,7 +40,7 @@ include( "${wxWidgets_USE_FILE}" )
 # For convenience we define the sources as a variable. You can add 
 # header files and cpp/c files and CMake will sort them out
 #set(SRCS main.cpp sessionNotebook.cpp)
-FILE(GLOB SRCS "src/*.cpp")
+FILE(GLOB SRCS "wx_citty/*.cpp")
  
 # wxWidgets-3.0.2 need c++11
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++11")
