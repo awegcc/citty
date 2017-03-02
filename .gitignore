@@ -6,6 +6,7 @@ CMakeFiles/
 Makefile
 citty.project
 citty.workspace
+wx_citty.layout
 cmake_install.cmake
 *.txt
 !CMakeLists.txt
