@@ -4,14 +4,15 @@
  * Event table
  */
 BEGIN_EVENT_TABLE(sessionNotebook, wxAuiNotebook)
-EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, sessionNotebook::OnNotebookPageClose)
-EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, sessionNotebook::OnAllowNotebookDnD)
-EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, sessionNotebook::OnNotebookPageClosed)
-EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, sessionNotebook::OnTabRightDown)
-EVT_MENU(ID_MENU_NEW_SESSION, sessionNotebook::OnNewSession)
-EVT_MENU(ID_MENU_FIRST_SESSION, sessionNotebook::OnFirstSession)
-EVT_MENU(ID_MENU_LAST_SESSION, sessionNotebook::OnLastSession)
-EVT_MENU(ID_MENU_ABOUT_SESSION, sessionNotebook::OnAbout)
+    EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, sessionNotebook::OnNotebookPageClose)
+    EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, sessionNotebook::OnAllowNotebookDnD)
+    EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, sessionNotebook::OnNotebookPageClosed)
+	EVT_AUINOTEBOOK_PAGE_CHANGED(wxID_ANY, sessionNotebook::OnNotebookPageChanged)
+    EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, sessionNotebook::OnTabRightDown)
+    EVT_MENU(ID_MENU_NEW_SESSION, sessionNotebook::OnNewSession)
+    EVT_MENU(ID_MENU_FIRST_SESSION, sessionNotebook::OnFirstSession)
+    EVT_MENU(ID_MENU_LAST_SESSION, sessionNotebook::OnLastSession)
+    EVT_MENU(ID_MENU_ABOUT_SESSION, sessionNotebook::OnAbout)
 END_EVENT_TABLE()
 
 sessionNotebook::sessionNotebook()
@@ -25,7 +26,7 @@ sessionNotebook::~sessionNotebook()
 {
 }
 
-sessionNotebook::sessionNotebook(wxWindow* parent,
+sessionNotebook::sessionNotebook(wxAuiNotebook* parent,
                                  wxWindowID id = wxID_ANY,
                                  const wxPoint& pos = wxDefaultPosition,
                                  const wxSize& size = wxDefaultSize,
@@ -34,15 +35,26 @@ sessionNotebook::sessionNotebook(wxWindow* parent,
 {
     m_parent = parent;
     m_switch = 0;
-    /* need html(wxHtml) link flag
+    // need html(wxHtml) link flag
+#ifdef CITTY_USE_HTML
     this->AddPage(CreateHTMLCtrl(this), wxT("Welcome to wxAUI") , true, wxNullBitmap);
     this->SetPageToolTip(this->GetPageCount()-1, "HTML (PageTooltip)");
-     */
+#endif // CITTY_USE_HTML
     this->AddSession();
 }
 
 void sessionNotebook::CreateDialog(const wxString& title)
 {
+}
+
+void sessionNotebook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
+{
+    sessionNotebook* ctrl = (sessionNotebook*)evt.GetEventObject();
+    ctrl->GetPage(ctrl->GetSelection());
+    wxString content;
+    content.Printf(wxT("select %d"), ctrl->GetSelection());
+
+	evt.Skip();
 }
 
 #ifdef CITTY_USE_STC
@@ -74,7 +86,8 @@ wxStyledTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
 #else
 wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
 {
-    wxString content = wxT("No content now!");
+    wxString content;
+    content.Printf(wxT("Line 1\n line2\ntitle: %s"), ctrl_text);
     wxTextCtrl *tc = new wxTextCtrl(this, wxID_ANY, content, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
     tc->SetBackgroundColour(wxColor(80, 80, 80));
     tc->SetForegroundColour(wxColor(255, 255, 255));
@@ -264,7 +277,7 @@ bool sessionNotebook::InsertSession(size_t position)
 
     title.Printf(wxT("Session %lu"), position);
     this->Freeze();
-    retval = this->InsertPage(position, CreateTextCtrl(), title, true);
+    retval = this->InsertPage(position, CreateTextCtrl(title), title, true);
     this->SetPageToolTip(position, title);
     this->Thaw();
 

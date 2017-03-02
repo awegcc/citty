@@ -98,9 +98,10 @@ void connectionNotebook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 {
 	connectionNotebook* ctrl = (connectionNotebook*)evt.GetEventObject();
     wxString content;
-    content.Printf(wxT("select %d"), ctrl->GetSelection());
+    content.Printf(wxT("connection %d"), ctrl->GetSelection());
 
     m_parent->SetTitle(content);
+    //::GetTopWindow(this)->SetTitle(content);
 
 	evt.Skip();
 }

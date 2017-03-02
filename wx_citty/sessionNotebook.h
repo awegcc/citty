@@ -39,7 +39,7 @@ private:
 public:
 	sessionNotebook();
 	~sessionNotebook();
-	sessionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
+	sessionNotebook(wxAuiNotebook* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
 	void CreateDialog(const wxString &title);
 #ifdef CITTY_USE_STC
 	wxStyledTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
@@ -74,6 +74,7 @@ protected:
 protected:
 	void OnNotebookPageClose(wxAuiNotebookEvent& evt);
 	void OnNotebookPageClosed(wxAuiNotebookEvent& evt);
+	void OnNotebookPageChanged(wxAuiNotebookEvent& evt);
 	void OnAllowNotebookDnD(wxAuiNotebookEvent& evt);
 	void OnButton(wxAuiNotebookEvent& evt);
 	void OnAbout(wxCommandEvent& WXUNUSED(event));
@@ -83,7 +84,7 @@ protected:
 
 private:
 	wxString m_title;
-	wxWindow *m_parent;
+	wxAuiNotebook *m_parent;
 	int m_switch;
 
 };
