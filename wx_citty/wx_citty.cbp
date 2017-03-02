@@ -52,6 +52,8 @@
 					<Add library="libwxbase30u.a" />
 					<Add library="libwxpng.a" />
 					<Add library="libwxzlib.a" />
+					<Add library="libwxmsw30u_html.a" />
+					<Add library="libwxmsw30u_stc.a" />
 					<Add directory="$(#wx)/lib/gcc_lib" />
 				</Linker>
 			</Target>

@@ -3,7 +3,7 @@
  * @author chenc45
  * @date 16/02/2017
  * @file sessionNotebook.h
- * @brief 
+ * @brief
  */
 #ifndef SESSIONNOTEBOOK_H
 #define SESSIONNOTEBOOK_H
@@ -13,8 +13,16 @@
 #include <wx/msgdlg.h>
 #include <wx/menu.h>
 #include <wx/textctrl.h>
-//#include <wx/stc/stc.h>
-//#include <wx/wxhtml.h>
+
+//#define CITTY_USE_STC
+#ifdef CITTY_USE_STC
+#include <wx/stc/stc.h>
+#endif // CITTY_USE_STC
+
+//#define CITTY_USE_HTML
+#ifdef CITTY_USE_HTML
+#include <wx/wxhtml.h>
+#endif // CITTY_USE_HTML
 
 class sessionNotebook: public wxAuiNotebook
 {
@@ -33,13 +41,20 @@ public:
 	~sessionNotebook();
 	sessionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
 	void CreateDialog(const wxString &title);
-	wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
-	//bool SetCppStyle(wxStyledTextCtrl *stc);
-	//bool SetHtmlStyle(wxStyledTextCtrl *stc);
-	//wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
+#ifdef CITTY_USE_STC
+	wxStyledTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
+	bool SetCppStyle(wxStyledTextCtrl *stc);
+#else
+    wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
+#endif // CITTY_USE_STC
+
+#ifdef CITTY_USE_HTML
+	wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
+	bool SetHtmlStyle(wxStyledTextCtrl *stc);
+#endif // CITTY_USE_HTML
 	bool InsertSession( size_t position);
 	bool AddSession();
-	
+
 private:
 	wxString GetHtmlText();
 	wxString GetCppText();
@@ -55,7 +70,7 @@ protected:
 	void OnTabRightDown(wxAuiNotebookEvent& evt);
 	void OnTabRightUp(wxAuiNotebookEvent& evt);
 	void OnTabBgDClick(wxAuiNotebookEvent& evt);
-	
+
 protected:
 	void OnNotebookPageClose(wxAuiNotebookEvent& evt);
 	void OnNotebookPageClosed(wxAuiNotebookEvent& evt);
@@ -65,7 +80,7 @@ protected:
 	void OnNewSession(wxCommandEvent& WXUNUSED(event));
 	void OnFirstSession(wxCommandEvent& WXUNUSED(event));
 	void OnLastSession(wxCommandEvent& WXUNUSED(event));
-	
+
 private:
 	wxString m_title;
 	wxWindow *m_parent;

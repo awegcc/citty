@@ -45,11 +45,13 @@ void sessionNotebook::CreateDialog(const wxString& title)
 {
 }
 
-wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
+#ifdef CITTY_USE_STC
+wxStyledTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
 {
     /* Commented because I can't use wxStyledTextCtrl on Windows 7 x64
      * It report a link error: unresolved external symbol wxSTCNameStr
      * Still in investagation
+     */
      wxStyledTextCtrl *stc = new wxStyledTextCtrl(this, wxID_ANY );
      stc->StyleClearAll();
      if( m_switch%2 ) {
@@ -60,16 +62,27 @@ wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
      }
      m_switch++;
      return stc;
-     */
+     /*
      wxString content = wxT("No content now!");
 
     wxTextCtrl *tc = new wxTextCtrl(this, wxID_ANY, content, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
     tc->SetBackgroundColour(wxColor(80, 80, 80));
 
     return tc;
+    */
 }
+#else
+wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
+{
+    wxString content = wxT("No content now!");
+    wxTextCtrl *tc = new wxTextCtrl(this, wxID_ANY, content, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+    tc->SetBackgroundColour(wxColor(80, 80, 80));
+    return tc;
+}
+#endif //CITTY_USE_STC
 
-/*
+
+#ifdef CITTY_USE_HTML
 wxHtmlWindow* sessionNotebook::CreateHTMLCtrl(wxWindow* parent)
 {
     if (!parent) {
@@ -81,7 +94,8 @@ wxHtmlWindow* sessionNotebook::CreateHTMLCtrl(wxWindow* parent)
     return ctrl;
 
 }
-*/
+#endif // CITTY_USE_HTML
+
 
 wxString sessionNotebook::GetCppText()
 {
@@ -261,13 +275,14 @@ bool sessionNotebook::AddSession()
     return InsertSession(this->GetPageCount());
 }
 
-/*
- bool sessionNotebook::SetCppStyle(wxStyledTextCtrl* stc)
- {
+
+#ifdef CITTY_USE_STC
+bool sessionNotebook::SetCppStyle(wxStyledTextCtrl* stc)
+{
 	enum
 	{
- MARGIN_LINE_NUMBERS,
- MARGIN_FOLD
+        MARGIN_LINE_NUMBERS,
+        MARGIN_FOLD
 	};
 	stc->SetLexer(wxSTC_LEX_CPP);
 	stc->SetMarginWidth (MARGIN_LINE_NUMBERS, 50);
@@ -344,7 +359,9 @@ bool sessionNotebook::AddSession()
 
 	return true;
  }
+ #endif // CITTY_USE_STC
 
+ #ifdef CITTY_USE_HTML
  bool sessionNotebook::SetHtmlStyle(wxStyledTextCtrl* stc)
  {
 	enum
@@ -374,4 +391,4 @@ bool sessionNotebook::AddSession()
 
 	return true;
  }
- */
+ #endif // CITTY_USE_HTML
