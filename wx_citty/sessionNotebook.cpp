@@ -61,8 +61,12 @@ wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
      m_switch++;
      return stc;
      */
-    
-    return new wxTextCtrl(this, wxID_ANY);
+     wxString content = wxT("No content now!");
+
+    wxTextCtrl *tc = new wxTextCtrl(this, wxID_ANY, content, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+    tc->SetBackgroundColour(wxColor(80, 80, 80));
+
+    return tc;
 }
 
 /*
@@ -71,11 +75,11 @@ wxHtmlWindow* sessionNotebook::CreateHTMLCtrl(wxWindow* parent)
     if (!parent) {
         parent = this;
     }
-    
+
     wxHtmlWindow* ctrl = new wxHtmlWindow(parent, wxID_ANY, wxDefaultPosition, wxSize(400,300));
     ctrl->SetPage(GetHtmlText());
     return ctrl;
-    
+
 }
 */
 
@@ -131,7 +135,7 @@ wxString sessionNotebook::GetHtmlText()
     "<p>See README.txt for more information.</p>\n"
     "</body>\n"
     "</html>\n";
-    
+
     return wxString::FromAscii(text);
 }
 
@@ -192,7 +196,7 @@ void sessionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
         else {
             evt.Veto();
         }
-        
+
     }
 }
 
@@ -242,13 +246,13 @@ bool sessionNotebook::InsertSession(size_t position)
     wxString title;
     // create the notebook off-window to avoid flicker
     //wxSize client_size = GetClientSize();
-    
+
     title.Printf(wxT("Session %lu"), position);
     this->Freeze();
     retval = this->InsertPage(position, CreateTextCtrl(), title, true);
     this->SetPageToolTip(position, title);
     this->Thaw();
-    
+
     return retval;
 }
 
@@ -270,54 +274,54 @@ bool sessionNotebook::AddSession()
 	stc->StyleSetForeground (wxSTC_STYLE_LINENUMBER, wxColour (75, 75, 75) );
 	stc->StyleSetBackground (wxSTC_STYLE_LINENUMBER, wxColour (220, 220, 220));
 	stc->SetMarginType (MARGIN_LINE_NUMBERS, wxSTC_MARGIN_NUMBER);
- 
- 
+
+
 	// ---- Enable code folding
 	stc->SetMarginType (MARGIN_FOLD, wxSTC_MARGIN_SYMBOL);
 	stc->SetMarginWidth(MARGIN_FOLD, 15);
 	stc->SetMarginMask (MARGIN_FOLD, wxSTC_MASK_FOLDERS);
 	stc->StyleSetBackground(MARGIN_FOLD, wxColor(200, 200, 200) );
 	stc->SetMarginSensitive(MARGIN_FOLD, true);
- 
+
 	// Properties found from http://www.scintilla.org/SciTEDoc.html
 	stc->SetProperty (wxT("fold"),         wxT("1") );
 	stc->SetProperty (wxT("fold.comment"), wxT("1") );
 	stc->SetProperty (wxT("fold.compact"), wxT("1") );
- 
+
 	wxColor grey( 100, 100, 100 );
 	stc->MarkerDefine (wxSTC_MARKNUM_FOLDER, wxSTC_MARK_ARROW );
 	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDER, grey);
 	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDER, grey);
- 
+
 	stc->MarkerDefine (wxSTC_MARKNUM_FOLDEROPEN,    wxSTC_MARK_ARROWDOWN);
 	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDEROPEN, grey);
 	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDEROPEN, grey);
- 
+
 	stc->MarkerDefine (wxSTC_MARKNUM_FOLDERSUB,     wxSTC_MARK_EMPTY);
 	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDERSUB, grey);
 	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDERSUB, grey);
- 
+
 	stc->MarkerDefine (wxSTC_MARKNUM_FOLDEREND,     wxSTC_MARK_ARROW);
 	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDEREND, grey);
 	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDEREND, _T("WHITE"));
- 
+
 	stc->MarkerDefine (wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_ARROWDOWN);
 	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDEROPENMID, grey);
 	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDEROPENMID, _T("WHITE"));
- 
+
 	stc->MarkerDefine (wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY);
 	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDERMIDTAIL, grey);
 	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDERMIDTAIL, grey);
- 
+
 	stc->MarkerDefine (wxSTC_MARKNUM_FOLDERTAIL,    wxSTC_MARK_EMPTY);
 	stc->MarkerSetForeground (wxSTC_MARKNUM_FOLDERTAIL, grey);
 	stc->MarkerSetBackground (wxSTC_MARKNUM_FOLDERTAIL, grey);
 	// ---- End of code folding part
- 
+
 	stc->SetWrapMode (wxSTC_WRAP_WORD); // other choice is wxSCI_WRAP_NONE
- 
+
 	stc->SetText(GetCppText());
- 
+
 	stc->StyleSetForeground (wxSTC_C_STRING,            wxColour(150,0,0));
 	stc->StyleSetForeground (wxSTC_C_PREPROCESSOR,      wxColour(165,105,0));
 	stc->StyleSetForeground (wxSTC_C_IDENTIFIER,        wxColour(40,0,60));
@@ -333,14 +337,14 @@ bool sessionNotebook::AddSession()
 	stc->StyleSetBold(wxSTC_C_WORD, true);
 	stc->StyleSetBold(wxSTC_C_WORD2, true);
 	stc->StyleSetBold(wxSTC_C_COMMENTDOCKEYWORD, true);
- 
+
 	// a sample list of keywords, I haven't included them all to keep it short...
 	stc->SetKeyWords(0, wxT("struct union enum return if else for while do switch case goto break default continue"));
 	stc->SetKeyWords(1, wxT("const register auto static typedef bool char short int long float void double sizeof"));
-	
+
 	return true;
  }
- 
+
  bool sessionNotebook::SetHtmlStyle(wxStyledTextCtrl* stc)
  {
 	enum
@@ -352,11 +356,11 @@ bool sessionNotebook::AddSession()
 	stc->StyleSetForeground (wxSTC_STYLE_LINENUMBER, wxColour (75, 75, 75) );
 	stc->StyleSetBackground (wxSTC_STYLE_LINENUMBER, wxColour (220, 220, 220));
 	stc->SetMarginType (MARGIN_LINE_NUMBERS, wxSTC_MARGIN_NUMBER);
- 
+
 	stc->SetWrapMode (wxSTC_WRAP_WORD);
- 
+
 	stc->SetText(GetHtmlText());
- 
+
 	stc->StyleClearAll();
 	stc->SetLexer(wxSTC_LEX_HTML);
 	stc->StyleSetForeground (wxSTC_H_DOUBLESTRING,     wxColour(255,0,0));
@@ -367,7 +371,7 @@ bool sessionNotebook::AddSession()
 	stc->StyleSetForeground (wxSTC_H_ATTRIBUTE,        wxColour(0,0,150));
 	stc->StyleSetForeground (wxSTC_H_ATTRIBUTEUNKNOWN, wxColour(0,0,150));
 	stc->StyleSetForeground (wxSTC_H_COMMENT,          wxColour(150,150,150));
-	
+
 	return true;
  }
  */

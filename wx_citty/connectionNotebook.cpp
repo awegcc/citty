@@ -23,7 +23,7 @@ BEGIN_EVENT_TABLE(connectionNotebook, wxAuiNotebook)
 	EVT_MENU(ID_MENU_FIRST_CONNECTION, connectionNotebook::OnFirstConnection)
 	EVT_MENU(ID_MENU_LAST_CONNECTION, connectionNotebook::OnLastConnection)
 	EVT_MENU(ID_MENU_ABOUT_CONNECTION, connectionNotebook::OnAbout)
-	
+
 	/* EVT_AUINOTEBOOK_BUTTON
 	 * Triggered by Close button click On Windows 7 x64
 	 */
@@ -50,11 +50,14 @@ connectionNotebook::connectionNotebook(wxWindow* parent,
 						wxAUI_NB_CLOSE_ON_ACTIVE_TAB;
 	// create the notebook off-window to avoid flicker
 	wxSize client_size = GetClientSize();
-	
+
 	m_notebook = new sessionNotebook(this, wxID_ANY,
 			wxPoint(client_size.x, client_size.y),
 			wxSize(430,200),
 			m_notebook_style);
+
+    this->AddPage(m_notebook, wxT("default"), true);
+    this->SetPageToolTip(0, wxT("default"));
 }
 
 
@@ -177,7 +180,7 @@ bool connectionNotebook::InsertConnection(size_t position)
 	retval = this->InsertPage(position, session, title, true);
 	this->SetPageToolTip(position, title);
 	this->Thaw();
-	
+
 	return retval;
 }
 

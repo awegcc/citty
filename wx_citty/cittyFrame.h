@@ -3,7 +3,7 @@
  * @author chenc45
  * @date 16/02/2017
  * @file cittyFrame.h
- * @brief 
+ * @brief
  */
 #ifndef CITTYFRAME_H
 #define CITTYFRAME_H
@@ -28,39 +28,7 @@ class cittyFrame : public wxFrame
 private:
 	enum
 	{
-		ID_InsertNotebookPage = wxID_HIGHEST+1,
-		ID_CreatePerspective,
-		ID_CopyPerspectiveCode,
-		ID_AllowFloating,
-		ID_AllowActivePane,
-		ID_TransparentHint,
-		ID_VenetianBlindsHint,
-		ID_RectangleHint,
-		ID_NoHint,
-		ID_HintFade,
-		ID_NoVenetianFade,
-		ID_TransparentDrag,
-		ID_NoGradient,
-		ID_VerticalGradient,
-		ID_HorizontalGradient,
-		ID_LiveUpdate,
-		ID_NotebookNoCloseButton,
-		ID_NotebookCloseButton,
-		ID_NotebookCloseButtonAll,
-		ID_NotebookCloseButtonActive,
-		ID_NotebookAllowTabMove,
-		ID_NotebookAllowTabExternalMove,
-		ID_NotebookAllowTabSplit,
-		ID_NotebookWindowList,
-		ID_NotebookScrollButtons,
-		ID_NotebookTabFixedWidth,
-		ID_NotebookArtGloss,
-		ID_NotebookArtSimple,
-		ID_NotebookAlignTop,
-		ID_NotebookAlignBottom,
-		ID_SampleItem,
-
-		ID_FirstPerspective = ID_CreatePerspective+1000
+		ID_InsertNotebookPage = wxID_HIGHEST+1
 	};
 
 public:
@@ -102,8 +70,6 @@ private:
 
 private:
 	wxAuiManager m_mgr;
-	wxArrayString m_perspectives;
-	wxMenu* m_perspectives_menu;
 	connectionNotebook* m_notebook;
 	long m_session_style; // session notebook style
 	long m_dialog_style;  // dialog notebook style
