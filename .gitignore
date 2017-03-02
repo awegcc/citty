@@ -7,6 +7,7 @@ Makefile
 citty.project
 citty.workspace
 wx_citty.layout
+wx_citty.depend
 cmake_install.cmake
 *.txt
 !CMakeLists.txt
