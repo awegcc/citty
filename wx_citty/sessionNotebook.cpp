@@ -77,6 +77,7 @@ wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
     wxString content = wxT("No content now!");
     wxTextCtrl *tc = new wxTextCtrl(this, wxID_ANY, content, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
     tc->SetBackgroundColour(wxColor(80, 80, 80));
+    tc->SetForegroundColour(wxColor(255, 255, 255));
     return tc;
 }
 #endif //CITTY_USE_STC

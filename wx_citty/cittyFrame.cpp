@@ -101,7 +101,7 @@ cittyFrame::cittyFrame(wxWindow* parent,
      * see the end up wxAuiManager::Update() for the test
      * code. For now, just hard code a frame minimum size
      */
-    SetMinSize(wxSize(500, 400));
+    SetMinSize(wxSize(600, 500));
 
     // make some default perspectives
     //wxString perspective_all = m_mgr.SavePerspective();
