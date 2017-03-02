@@ -14,6 +14,17 @@ EVT_MENU(ID_MENU_LAST_SESSION, sessionNotebook::OnLastSession)
 EVT_MENU(ID_MENU_ABOUT_SESSION, sessionNotebook::OnAbout)
 END_EVENT_TABLE()
 
+sessionNotebook::sessionNotebook()
+	:wxAuiNotebook(nullptr, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_DEFAULT_STYLE)
+{
+	m_parent = nullptr;
+	m_switch = 0;
+}
+
+sessionNotebook::~sessionNotebook()
+{
+}
+
 sessionNotebook::sessionNotebook(wxWindow* parent,
                                  wxWindowID id = wxID_ANY,
                                  const wxPoint& pos = wxDefaultPosition,

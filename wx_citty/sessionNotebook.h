@@ -29,8 +29,8 @@ private:
 	wxDECLARE_EVENT_TABLE();
 
 public:
-	sessionNotebook() { }
-	virtual ~sessionNotebook() { }
+	sessionNotebook();
+	~sessionNotebook();
 	sessionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
 	void CreateDialog(const wxString &title);
 	wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
