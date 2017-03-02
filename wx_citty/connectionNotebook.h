@@ -3,7 +3,7 @@
  * @author chenc45
  * @date 16/02/2017
  * @file connectionNotebook.h
- * @brief 
+ * @brief
  */
 #ifndef CONNECTIONNOTEBOOK_H
 #define CONNECTIONNOTEBOOK_H
@@ -30,12 +30,12 @@ private:
 
 public:
 	connectionNotebook() { }
-	connectionNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
+	connectionNotebook(wxFrame* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
 	virtual ~connectionNotebook() { }
 	void CreateConnection(const wxString &title);
 	bool InsertConnection( size_t position);
 	bool AddConnection();
-	
+
 protected:
 	void OnTabClicked(wxAuiNotebookEvent& evt);
 	void OnTabDragMotion(wxAuiNotebookEvent& evt);
@@ -51,6 +51,7 @@ protected:
 protected:
 	void OnNotebookPageClose(wxAuiNotebookEvent& evt);
 	void OnNotebookPageClosed(wxAuiNotebookEvent& evt);
+    void OnNotebookPageChanged(wxAuiNotebookEvent& evt);
 	void OnAllowNotebookDnD(wxAuiNotebookEvent& evt);
 	void OnButton(wxAuiNotebookEvent& evt);
 	void OnAbout(wxCommandEvent& WXUNUSED(event));
@@ -60,6 +61,7 @@ protected:
 
 private:
 	sessionNotebook *m_notebook;
+	wxFrame *m_parent;
 	wxString m_title;
 	long m_notebook_style;
 	long m_notebook_theme;

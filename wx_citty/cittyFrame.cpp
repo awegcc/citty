@@ -68,7 +68,7 @@ cittyFrame::cittyFrame(wxWindow* parent,
                         wxAUI_NB_CLOSE_ON_ACTIVE_TAB;
     m_notebook_theme = 0;
 
-#ifdef wxUSE_MENUS
+#if wxUSE_MENUS && 0
     wxMenu* file_menu = new wxMenu;
     file_menu->Append(ID_InsertNotebookPage, _("&New connection"), _("New a connection"));
     file_menu->Append(wxID_EXIT);
@@ -82,7 +82,7 @@ cittyFrame::cittyFrame(wxWindow* parent,
     SetMenuBar(menubar);
 #endif // wxUSE_MENUS
 
-#if wxUSE_STATUSBAR
+#if wxUSE_STATUSBAR && 0
     CreateStatusBar();
     GetStatusBar()->SetStatusText(wxbuildinfo(short_f));
 #endif //wxUSE_STATUSBAR
@@ -166,7 +166,7 @@ wxPoint cittyFrame::GetStartPosition()
 void cittyFrame::OnInsertNotebookPage(wxCommandEvent& WXUNUSED(event))
 {
     this->SetTitle(wxT("OnInsertNotebookPage"));
-    wxLogMessage("Enter OnInsertNotebookPage");
+    //wxLogMessage("Enter OnInsertNotebookPage");
     size_t position = m_notebook->GetPageCount();
     m_notebook->InsertConnection(position);
 }

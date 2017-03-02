@@ -18,6 +18,7 @@ BEGIN_EVENT_TABLE(connectionNotebook, wxAuiNotebook)
 	EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, connectionNotebook::OnNotebookPageClose)
 	EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, connectionNotebook::OnAllowNotebookDnD)
 	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, connectionNotebook::OnNotebookPageClosed)
+	EVT_AUINOTEBOOK_PAGE_CHANGED(wxID_ANY, connectionNotebook::OnNotebookPageChanged)
 	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(wxID_ANY, connectionNotebook::OnTabRightDown)
 	EVT_MENU(ID_MENU_NEW_CONNECTION, connectionNotebook::OnNewConnection)
 	EVT_MENU(ID_MENU_FIRST_CONNECTION, connectionNotebook::OnFirstConnection)
@@ -30,14 +31,14 @@ BEGIN_EVENT_TABLE(connectionNotebook, wxAuiNotebook)
 	//EVT_AUINOTEBOOK_BUTTON(wxID_ANY, cittyAuiNotebook::OnButton)
 END_EVENT_TABLE()
 
-connectionNotebook::connectionNotebook(wxWindow* parent,
+connectionNotebook::connectionNotebook(wxFrame* parent,
 		wxWindowID id = wxID_ANY,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = wxAUI_NB_DEFAULT_STYLE)
 : wxAuiNotebook(parent, id, pos, size, style)
 {
-
+    m_parent = parent;
 	m_notebook_theme = 0;
 	// set up sub notebook style
 	m_notebook_style = wxNO_BORDER |
@@ -66,7 +67,7 @@ void connectionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 	connectionNotebook* ctrl = (connectionNotebook*)evt.GetEventObject();
 	if (ctrl->GetPage(evt.GetSelection())->IsKindOf(CLASSINFO(wxWindow)))
 	{
-		if (wxYES == wxMessageBox(wxT("Sure to close this connection?"),
+		if (wxNO == wxMessageBox(wxT("Sure to close this connection?"),
                                   wxT("Close connection"), wxYES_NO, this))
         {
 			evt.Veto();
@@ -75,9 +76,9 @@ void connectionNotebook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 	else if(ctrl->GetPageCount() == (size_t)evt.GetSelection() + 1)
 	{
 		wxMessageBox(wxT("Can not close the last connection!"), wxT("wxAUI"), wxOK, this);
-		//evt.Veto();
-		evt.Skip();
+		evt.Veto();
 	}
+	evt.Skip();
 }
 
 void connectionNotebook::OnNotebookPageClosed(wxAuiNotebookEvent& evt)
@@ -89,6 +90,17 @@ void connectionNotebook::OnNotebookPageClosed(wxAuiNotebookEvent& evt)
 			wxString::Format("Invalid selection %d, only %d pages left",
 				ctrl->GetSelection(),
 				(int)ctrl->GetPageCount()) );
+
+	evt.Skip();
+}
+
+void connectionNotebook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
+{
+	connectionNotebook* ctrl = (connectionNotebook*)evt.GetEventObject();
+    wxString content;
+    content.Printf(wxT("select %d"), ctrl->GetSelection());
+
+    m_parent->SetTitle(content);
 
 	evt.Skip();
 }
