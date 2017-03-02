@@ -10,6 +10,7 @@ ConnectionPage::ConnectionPage(QWidget *parent = nullptr)
 {
     m_tab = new QTabWidget(this);
     m_tab->setTabPosition(QTabWidget::South);
+    m_tab->setFixedSize(100, 100);
     QWidget *tabPage01 = new SessionPage();
     QWidget *tabPage02 = new SessionPage();
     QWidget *tabPage03 = new SessionPage();
@@ -23,4 +24,5 @@ ConnectionPage::ConnectionPage(QWidget *parent = nullptr)
 
 ConnectionPage::~ConnectionPage()
 {
+    //delete m_tab;
 }

@@ -19,6 +19,7 @@ public:
 
 private:
     QTabWidget *m_tab;
+    QSize m_size;
 };
 
 #endif // MAINWINDOW_H

@@ -9,6 +9,7 @@ MainWindow::MainWindow(MainWindow *parent)
     : QMainWindow(parent)
 {
     m_tab = new QTabWidget(this);
+
     m_tab->setTabPosition(QTabWidget::North);
     QWidget *tabPage01 = new ConnectionPage();
     QWidget *tabPage02 = new ConnectionPage();
@@ -19,11 +20,14 @@ MainWindow::MainWindow(MainWindow *parent)
     m_tab->addTab(tabPage02, "tab02");
     m_tab->addTab(tabPage03, "tab02");
     m_tab->addTab(tabPage04, "tab02");
+
+    this->centerAndResize();
+    m_tab->setFixedSize(m_size);
 }
 
 MainWindow::~MainWindow()
 {
-
+    //delete m_tab;
 }
 
 bool MainWindow::centerAndResize()
@@ -38,13 +42,14 @@ bool MainWindow::centerAndResize()
     width *= 0.6; // 60% of the screen size
     height *= 0.6; // 60% of the screen size
     //qDebug() << "Computed dimensions " << width << "x" << height;
-    QSize newSize( width, height );
+    m_size.setWidth(width);
+    m_size.setHeight(height);
 
     setGeometry(
                 QStyle::alignedRect(
                     Qt::LeftToRight,
                     Qt::AlignCenter,
-                    newSize,
+                    m_size,
                     qApp->desktop()->availableGeometry()
                     )
                 );
