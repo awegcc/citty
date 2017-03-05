@@ -8,23 +8,14 @@
  * @brief 
  */
 
-#include <wx/aui/aui.h>
-
-#include "cittyFrame.h"
-
-class cittyFrame;
+#include <wx/panel.h>
 
 class SettingsPanel: public wxPanel
 {
 public:
 	SettingsPanel();
 	~SettingsPanel();
-	
 private:
-	cittyFrame* m_frame;
-	wxSpinCtrl* m_border_size;
-	wxSpinCtrl* m_sash_size;
-	wxSpinCtrl* m_caption_size;
 };
 
 

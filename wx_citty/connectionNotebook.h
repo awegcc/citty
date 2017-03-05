@@ -69,7 +69,6 @@ private:
 	wxString m_title;
 	long m_notebook_style;
 	long m_notebook_theme;
-	int m_id;
 };
 
 #endif // CONNECTIONNOTEBOOK_H
