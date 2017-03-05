@@ -12,7 +12,7 @@
 #include <wx/notebook.h>
 #include <wx/msgdlg.h>
 #include <wx/menu.h>
-#include <wx/textctrl.h>
+#include "cittyTerm.h"
 
 //#define CITTY_USE_STC
 #ifdef CITTY_USE_STC
@@ -39,13 +39,17 @@ private:
 public:
 	sessionNotebook();
 	~sessionNotebook();
-	sessionNotebook(wxAuiNotebook* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
-	void CreateDialog(const wxString &title);
+    sessionNotebook(wxAuiNotebook* parent,
+                    wxWindowID id = wxID_ANY,
+                    const wxPoint& pos = wxDefaultPosition,
+                    const wxSize& size = wxDefaultSize,
+                    long style = wxAUI_NB_DEFAULT_STYLE);
+    void CreateDialog(const wxString &title);
 #ifdef CITTY_USE_STC
 	wxStyledTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
 	bool SetCppStyle(wxStyledTextCtrl *stc);
 #else
-    wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
+    cittyTerm* CreateTextCtrl(const wxString& text = wxEmptyString);
 #endif // CITTY_USE_STC
 
 #ifdef CITTY_USE_HTML

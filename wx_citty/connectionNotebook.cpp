@@ -32,10 +32,10 @@ BEGIN_EVENT_TABLE(connectionNotebook, wxAuiNotebook)
 END_EVENT_TABLE()
 
 connectionNotebook::connectionNotebook(wxFrame* parent,
-		wxWindowID id = wxID_ANY,
-		const wxPoint& pos = wxDefaultPosition,
-		const wxSize& size = wxDefaultSize,
-		long style = wxAUI_NB_DEFAULT_STYLE)
+                                        wxWindowID id,
+                                        const wxPoint& pos,
+                                        const wxSize& size,
+                                        long style)
 : wxAuiNotebook(parent, id, pos, size, style)
 {
     m_parent = parent;
@@ -98,7 +98,7 @@ void connectionNotebook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 {
 	connectionNotebook* ctrl = (connectionNotebook*)evt.GetEventObject();
     wxString content;
-    content.Printf(wxT("connection %d"), ctrl->GetSelection());
+    content.Printf(wxT("select %d"), ctrl->GetSelection());
 
     m_parent->SetTitle(content);
     //::GetTopWindow(this)->SetTitle(content);

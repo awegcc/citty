@@ -30,7 +30,11 @@ private:
 
 public:
 	connectionNotebook() { }
-	connectionNotebook(wxFrame* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
+	connectionNotebook(wxFrame* parent,
+                        wxWindowID id = wxID_ANY,
+                        const wxPoint& pos = wxDefaultPosition,
+                        const wxSize& size = wxDefaultSize,
+                        long style = wxAUI_NB_DEFAULT_STYLE);
 	virtual ~connectionNotebook() { }
 	void CreateConnection(const wxString &title);
 	bool InsertConnection( size_t position);

@@ -27,10 +27,10 @@ sessionNotebook::~sessionNotebook()
 }
 
 sessionNotebook::sessionNotebook(wxAuiNotebook* parent,
-                                 wxWindowID id = wxID_ANY,
-                                 const wxPoint& pos = wxDefaultPosition,
-                                 const wxSize& size = wxDefaultSize,
-                                 long style = wxAUI_NB_DEFAULT_STYLE)
+                                 wxWindowID id,
+                                 const wxPoint& pos,
+                                 const wxSize& size,
+                                 long style)
 : wxAuiNotebook(parent, id, pos, size, style)
 {
     m_parent = parent;
@@ -74,24 +74,16 @@ wxStyledTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
      }
      m_switch++;
      return stc;
-     /*
-     wxString content = wxT("No content now!");
-
-    wxTextCtrl *tc = new wxTextCtrl(this, wxID_ANY, content, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-    tc->SetBackgroundColour(wxColor(80, 80, 80));
-
-    return tc;
-    */
 }
 #else
-wxTextCtrl* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
+cittyTerm* sessionNotebook::CreateTextCtrl(const wxString& ctrl_text)
 {
     wxString content;
     content.Printf(wxT("Line 1\n line2\ntitle: %s"), ctrl_text);
-    wxTextCtrl *tc = new wxTextCtrl(this, wxID_ANY, content, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-    tc->SetBackgroundColour(wxColor(80, 80, 80));
-    tc->SetForegroundColour(wxColor(255, 255, 255));
-    return tc;
+    cittyTerm *term = new cittyTerm(this, wxID_ANY, content, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+    term->SetBackgroundColour(wxColor(80, 80, 80));
+    term->SetForegroundColour(wxColor(255, 255, 255));
+    return term;
 }
 #endif //CITTY_USE_STC
 
