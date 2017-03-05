@@ -3,8 +3,9 @@
 
 #include <QWidget>
 #include <QTextEdit>
+#include <QTabWidget>
 
-class SessionPage: public QWidget
+class SessionPage: public QTabWidget
 {
 public:
     SessionPage();

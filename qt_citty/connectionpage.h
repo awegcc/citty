@@ -3,10 +3,11 @@
 
 #include <QWidget>
 #include <QTabWidget>
+#include <QTextEdit>
 
 #include "sessionpage.h"
 
-class ConnectionPage:public QWidget
+class ConnectionPage:public QTabWidget
 {
 public:
     ConnectionPage();
@@ -14,7 +15,7 @@ public:
     ~ConnectionPage();
 
 private:
-    QTabWidget *m_tab;
+    SessionPage *m_sessionTab;
 };
 
 #endif // CONNECTIONPAGE_H

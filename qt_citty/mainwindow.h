@@ -6,12 +6,12 @@
 
 #include "connectionpage.h"
 
-class MainWindow : public QMainWindow
+class MainWindow : public QTabWidget
 {
     Q_OBJECT
 
 public:
-    MainWindow(MainWindow *parent = 0);
+    MainWindow(MainWindow *parent = nullptr);
     ~MainWindow();
 
 public:

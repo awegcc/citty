@@ -6,9 +6,9 @@
 #include <QStyle>
 
 MainWindow::MainWindow(MainWindow *parent)
-    : QMainWindow(parent)
+    : QTabWidget(parent)
 {
-    m_tab = new QTabWidget(this);
+    m_tab = this;
 
     m_tab->setTabPosition(QTabWidget::North);
     QWidget *tabPage01 = new ConnectionPage();
@@ -16,10 +16,10 @@ MainWindow::MainWindow(MainWindow *parent)
     QWidget *tabPage03 = new ConnectionPage();
     QWidget *tabPage04 = new ConnectionPage();
 
-    m_tab->addTab(tabPage01, "tab01");
-    m_tab->addTab(tabPage02, "tab02");
-    m_tab->addTab(tabPage03, "tab02");
-    m_tab->addTab(tabPage04, "tab02");
+    m_tab->addTab(tabPage01, "connection 01");
+    m_tab->addTab(tabPage02, "connection 02");
+    m_tab->addTab(tabPage03, "connection 03");
+    m_tab->addTab(tabPage04, "connection 04");
 
     this->centerAndResize();
     m_tab->setFixedSize(m_size);

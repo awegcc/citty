@@ -9,6 +9,8 @@ citty.workspace
 wx_citty.layout
 wx_citty.depend
 cmake_install.cmake
+build-citty-Desktop_Qt*
+citty.pro.user.*
 *.txt
 !CMakeLists.txt
 *.mk

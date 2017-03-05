@@ -1,25 +1,17 @@
 #include "connectionpage.h"
 
 ConnectionPage::ConnectionPage()
-    :QWidget(nullptr)
+    :QTabWidget(nullptr)
 {
 }
 
-ConnectionPage::ConnectionPage(QWidget *parent = nullptr)
-    :QWidget(parent)
+ConnectionPage::ConnectionPage(QWidget *parent)
+    :QTabWidget(parent)
 {
-    m_tab = new QTabWidget(this);
-    m_tab->setTabPosition(QTabWidget::South);
-    m_tab->setFixedSize(100, 100);
-    QWidget *tabPage01 = new SessionPage();
-    QWidget *tabPage02 = new SessionPage();
-    QWidget *tabPage03 = new SessionPage();
-    QWidget *tabPage04 = new SessionPage();
+    this->setTabPosition(QTabWidget::South);
+    this->setFixedSize(100, 80);
 
-    m_tab->addTab(tabPage01, "tab01");
-    m_tab->addTab(tabPage02, "tab02");
-    m_tab->addTab(tabPage03, "tab02");
-    m_tab->addTab(tabPage04, "tab02");
+    m_sessionTab = new SessionPage();
 }
 
 ConnectionPage::~ConnectionPage()
